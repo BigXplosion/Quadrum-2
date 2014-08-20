@@ -1,0 +1,13 @@
+[
+{
+  "modid": "Quadrum",
+  "name": "Quadrum",
+  "description": "Quadrum",
+  "version": "${mod_version}",
+  "mcversion": "${minecraft_version}",
+  "authors": [ "dmillerw" ],
+  "dependencies": [
+     "mod_MinecraftForge"
+  ]
+}
+]
