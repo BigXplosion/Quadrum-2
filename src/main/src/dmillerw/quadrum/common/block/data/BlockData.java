@@ -1,7 +1,8 @@
-package dmillerw.quadrum.common.data;
+package dmillerw.quadrum.common.block.data;
 
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
+import dmillerw.quadrum.common.lib.Required;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -16,9 +17,12 @@ public class BlockData {
     private Material blockMaterial;
     private Block.SoundType blockSound;
 
+    @Required
     public String name = "";
+    @Required
     @SerializedName("default-texture")
     public String defaultTexture = "";
+    @Required
     public String material = "";
 
     @SerializedName("texture-info")

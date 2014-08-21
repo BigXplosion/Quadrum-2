@@ -1,4 +1,4 @@
-package dmillerw.quadrum.common.data;
+package dmillerw.quadrum.common.block.data;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

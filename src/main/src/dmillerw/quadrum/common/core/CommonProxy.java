@@ -2,13 +2,13 @@ package dmillerw.quadrum.common.core;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import dmillerw.quadrum.common.ItemCustom;
 import dmillerw.quadrum.common.block.BlockCustom;
 import dmillerw.quadrum.common.block.ItemBlockCustom;
-import dmillerw.quadrum.common.data.BlockData;
-import dmillerw.quadrum.common.data.BlockLoader;
-import dmillerw.quadrum.common.data.ItemData;
-import dmillerw.quadrum.common.data.ItemLoader;
+import dmillerw.quadrum.common.block.data.BlockData;
+import dmillerw.quadrum.common.block.data.BlockLoader;
+import dmillerw.quadrum.common.item.ItemCustom;
+import dmillerw.quadrum.common.item.data.ItemData;
+import dmillerw.quadrum.common.item.data.ItemLoader;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 

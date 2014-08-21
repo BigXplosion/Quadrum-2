@@ -2,10 +2,10 @@ package dmillerw.quadrum.client.texture;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import dmillerw.quadrum.common.data.BlockData;
-import dmillerw.quadrum.common.data.BlockLoader;
-import dmillerw.quadrum.common.data.ItemData;
-import dmillerw.quadrum.common.data.ItemLoader;
+import dmillerw.quadrum.common.block.data.BlockData;
+import dmillerw.quadrum.common.block.data.BlockLoader;
+import dmillerw.quadrum.common.item.data.ItemData;
+import dmillerw.quadrum.common.item.data.ItemLoader;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
