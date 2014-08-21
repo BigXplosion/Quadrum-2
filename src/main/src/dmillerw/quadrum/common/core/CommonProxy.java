@@ -4,8 +4,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import dmillerw.quadrum.Quadrum;
-import dmillerw.quadrum.common.block.BlockQuadrum;
-import dmillerw.quadrum.common.block.ItemBlockQuadrum;
+import dmillerw.quadrum.common.block.*;
 import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.block.data.BlockLoader;
 import dmillerw.quadrum.common.item.ItemQuadrum;
@@ -29,7 +28,21 @@ public class CommonProxy {
 
         for (BlockData blockData : BlockLoader.blocks) {
             if (blockData != null) {
-                Block block = new BlockQuadrum(blockData);
+                Block block = null;
+                switch (blockData.getBlockType()) {
+                    case STAIR:
+                        block = new BlockQuadrumStair(blockData);
+                        break;
+                    case SLAB:
+                        block = new BlockQuadrumSlab(blockData);
+                        break;
+                    case FENCE:
+                        block = new BlockQuadrumFence(blockData);
+                        break;
+                    default:
+                        block = new BlockQuadrum(blockData);
+                        break;
+                }
                 GameRegistry.registerBlock(block, ItemBlockQuadrum.class, blockData.name);
             }
         }

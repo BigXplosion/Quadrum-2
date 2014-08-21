@@ -48,12 +48,22 @@ public class TextureLoader {
     private Map<String, CustomAtlasSprite> blockMapping;
     private Map<String, CustomAtlasSprite> itemMapping;
 
-    private void registerBlockIcon(String string, CustomAtlasSprite icon) {
+    private void registerBlockIcon(String string) {
+        if (blockMap.getTextureExtry("quadrum:" + string) != null || blockMapping.containsKey(string)) {
+            return;
+        }
+
+        CustomAtlasSprite icon = new CustomAtlasSprite(string, true);
         blockMap.setTextureEntry("quadrum:" + string, icon);
         blockMapping.put(string, icon);
     }
 
-    private void registerItemIcon(String string, CustomAtlasSprite icon) {
+    private void registerItemIcon(String string) {
+        if (itemMap.getTextureExtry("quadrum:" + string) != null || itemMapping.containsKey(string)) {
+            return;
+        }
+
+        CustomAtlasSprite icon = new CustomAtlasSprite(string, false);
         itemMap.setTextureEntry("quadrum:" + string, icon);
         itemMapping.put(string, icon);
     }
@@ -72,20 +82,17 @@ public class TextureLoader {
             blockMap = event.map;
             blockMapping = Maps.newHashMap();
             for (BlockData block : BlockLoader.blocks) {
-                CustomAtlasSprite icon = new CustomAtlasSprite(block.defaultTexture, true);
-                registerBlockIcon(block.defaultTexture, icon);
+                registerBlockIcon(block.defaultTexture);
 
                 for (String string : block.textureInfo.values()) {
-                    icon = new CustomAtlasSprite(string, true);
-                    registerBlockIcon(string, icon);
+                    registerBlockIcon(string);
                 }
             }
         } else if (event.map.getTextureType() == 1) {
             itemMap = event.map;
             itemMapping = Maps.newHashMap();
             for (ItemData item : ItemLoader.items) {
-                CustomAtlasSprite icon = new CustomAtlasSprite(item.texture, false);
-                registerItemIcon(item.texture, icon);
+                registerItemIcon(item.texture);
             }
         }
     }

@@ -2,15 +2,19 @@ package dmillerw.quadrum.common.block.data;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.lib.ExtensionFilter;
 import dmillerw.quadrum.common.lib.JsonVerification;
+import dmillerw.quadrum.common.lib.TypeSpecific;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +30,29 @@ public class BlockLoader {
 
         for (File file : Quadrum.blockDir.listFiles(new ExtensionFilter("json"))) {
             try {
-                JsonObject object = Quadrum.gson.fromJson(new FileReader(file), JsonObject.class);
+                JsonObject jsonObject = Quadrum.gson.fromJson(new FileReader(file), JsonObject.class);
 
-                if (object != null && JsonVerification.verifyRequirements(file, object, BlockData.class)) {
-                    BlockData blockData = Quadrum.gson.fromJson(object, BlockData.class);
+                if (jsonObject != null && JsonVerification.verifyRequirements(file, jsonObject, BlockData.class)) {
+                    BlockData blockData = Quadrum.gson.fromJson(jsonObject, BlockData.class);
+
+                    List<String> keys = Lists.newArrayList();
+                    for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                        keys.add(entry.getKey());
+                    }
+
+                    for (Field field : BlockData.class.getDeclaredFields()) {
+                        String name = field.getName();
+                        if (field.getAnnotation(SerializedName.class) != null) {
+                            name = field.getAnnotation(SerializedName.class).value();
+                        }
+
+                        TypeSpecific typeSpecific = field.getAnnotation(TypeSpecific.class);
+
+                        if (typeSpecific != null && typeSpecific.value() != blockData.getBlockType() && keys.contains(name)) {
+                            Quadrum.log(Level.INFO, "%s contains the key %s, but that key can't be applied to the %s block type. It will be ignored.", file.getName(), name, blockData.getBlockType());
+                        }
+                    }
+
                     Map<String, String> loweredMap = Maps.newHashMap();
                     for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
                         loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());

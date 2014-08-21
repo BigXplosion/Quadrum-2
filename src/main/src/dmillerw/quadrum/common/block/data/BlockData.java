@@ -3,8 +3,10 @@ package dmillerw.quadrum.common.block.data;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.common.lib.Required;
+import dmillerw.quadrum.common.lib.TypeSpecific;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 
 import java.util.Map;
 
@@ -13,7 +15,15 @@ import java.util.Map;
  */
 public class BlockData {
 
+    public static enum BlockType {
+        BLOCK,
+        SLAB,
+        STAIR,
+        FENCE
+    }
+
     /* INTERPRETED VALUES */
+    private BlockType blockType;
     private Material blockMaterial;
     private Block.SoundType blockSound;
 
@@ -24,20 +34,23 @@ public class BlockData {
     public String defaultTexture = "";
     @Required
     public String material = "";
+    public String type = "block";
 
+    @TypeSpecific(BlockType.BLOCK)
     @SerializedName("texture-info")
     public Map<String, String> textureInfo = Maps.newHashMap();
 
     @SerializedName("ore-dictionary")
     public String[] oreDictionary = new String[0];
 
-    public Drop[] drops = new Drop[0]; // Zero-length array means it will drop itself
+    public Drop[] drops = new Drop[0];
 
     public float hardness = 2F;
     public float resistance = 2F;
 
     @SerializedName("light-level")
     public int lightLevel = 0;
+    @TypeSpecific(BlockType.BLOCK)
     @SerializedName("redstone-level")
     public int redstoneLevel = 0;
     @SerializedName("burn-time")
@@ -49,12 +62,31 @@ public class BlockData {
 
     public boolean transparent = false;
     public boolean collision = true;
+    @TypeSpecific(BlockType.BLOCK)
     public boolean flammable = false;
+    @TypeSpecific(BlockType.BLOCK)
     public boolean soil = false;
     @SerializedName("require-tool")
     public boolean requiresTool = true;
     @SerializedName("drops-self")
     public boolean dropsSelf = true;
+
+    public BlockType getBlockType() {
+        if (blockType == null) {
+            if (type.equalsIgnoreCase("block")) {
+                blockType = BlockType.BLOCK;
+            } else if (type.equalsIgnoreCase("slab")) {
+                blockType = BlockType.SLAB;
+            } else if (type.equalsIgnoreCase("stair") || type.equalsIgnoreCase("stairs")) {
+                blockType = BlockType.STAIR;
+            } else if (type.equalsIgnoreCase("fence")) {
+                blockType = BlockType.FENCE;
+            } else {
+                blockType = BlockType.BLOCK;
+            }
+        }
+        return blockType;
+    }
 
     public Material getBlockMaterial() {
         if (blockMaterial == null) {
@@ -71,6 +103,21 @@ public class BlockData {
             }
         }
         return blockMaterial;
+    }
+
+    public Block getSimilarBlock() {
+        Material material1 = getBlockMaterial();
+        if (material1 == Material.rock) {
+            return Blocks.stone;
+        } else if (material1 == Material.wood) {
+            return Blocks.planks;
+        } else if (material1 == Material.ground) {
+            return Blocks.dirt;
+        } else if (material1 == Material.iron) {
+            return Blocks.iron_block;
+        } else {
+            return Blocks.stone;
+        }
     }
 
     public Block.SoundType getBlockSound() {
