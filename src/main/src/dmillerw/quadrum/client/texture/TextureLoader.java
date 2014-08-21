@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import dmillerw.quadrum.common.data.BlockData;
 import dmillerw.quadrum.common.data.BlockLoader;
+import dmillerw.quadrum.common.data.ItemData;
+import dmillerw.quadrum.common.data.ItemLoader;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -34,6 +36,10 @@ public class TextureLoader {
         }
     }
 
+    public static IIcon getItemIcon(ItemData data) {
+        return INSTANCE.getItemIcon(data.texture);
+    }
+
     public static final TextureLoader INSTANCE = new TextureLoader();
 
     private TextureMap blockMap;
@@ -42,9 +48,14 @@ public class TextureLoader {
     private Map<String, CustomAtlasSprite> blockMapping;
     private Map<String, CustomAtlasSprite> itemMapping;
 
-    private void registerBlock(String string, CustomAtlasSprite icon) {
+    private void registerBlockIcon(String string, CustomAtlasSprite icon) {
         blockMap.setTextureEntry("quadrum:" + string, icon);
         blockMapping.put(string, icon);
+    }
+
+    private void registerItemIcon(String string, CustomAtlasSprite icon) {
+        itemMap.setTextureEntry("quadrum:" + string, icon);
+        itemMapping.put(string, icon);
     }
 
     public IIcon getBlockIcon(String name) {
@@ -52,7 +63,7 @@ public class TextureLoader {
     }
 
     public IIcon getItemIcon(String name) {
-        return itemMap.getTextureExtry("quadrum:" + name);
+        return itemMapping.get(name);
     }
 
     @SubscribeEvent
@@ -62,16 +73,20 @@ public class TextureLoader {
             blockMapping = Maps.newHashMap();
             for (BlockData block : BlockLoader.blocks) {
                 CustomAtlasSprite icon = new CustomAtlasSprite(block.defaultTexture, true);
-                registerBlock(block.defaultTexture, icon);
+                registerBlockIcon(block.defaultTexture, icon);
 
                 for (String string : block.textureInfo.values()) {
                     icon = new CustomAtlasSprite(string, true);
-                    registerBlock(string, icon);
+                    registerBlockIcon(string, icon);
                 }
             }
         } else if (event.map.getTextureType() == 1) {
             itemMap = event.map;
             itemMapping = Maps.newHashMap();
+            for (ItemData item : ItemLoader.items) {
+                CustomAtlasSprite icon = new CustomAtlasSprite(item.texture, false);
+                registerItemIcon(item.texture, icon);
+            }
         }
     }
 

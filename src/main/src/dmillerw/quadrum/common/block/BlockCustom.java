@@ -6,9 +6,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.client.texture.TextureLoader;
 import dmillerw.quadrum.common.data.BlockData;
 import dmillerw.quadrum.common.data.Drop;
+import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -36,7 +36,7 @@ public class BlockCustom extends Block {
         setHardness(data.hardness);
         setResistance(data.resistance);
         setBlockName(data.name);
-        setCreativeTab(CreativeTabs.tabBlock);
+        setCreativeTab(TabQuadrum.BLOCK);
 
         this.opaque = !data.transparent;
         this.lightOpacity = !data.transparent ? 255 : 0;

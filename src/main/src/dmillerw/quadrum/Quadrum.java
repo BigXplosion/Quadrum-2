@@ -44,38 +44,38 @@ public class Quadrum {
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         blockDir = new File(event.getModConfigurationDirectory(), "Quadrum/block/");
-//        itemDir = new File(event.getModConfigurationDirectory(), "Quadrum/item/");
+        itemDir = new File(event.getModConfigurationDirectory(), "Quadrum/item/");
 
         if (!blockDir.exists()) {
             blockDir.mkdirs();
         }
 
-//        if (!itemDir.exists()) {
-//            itemDir.mkdirs();
-//        }
+        if (!itemDir.exists()) {
+            itemDir.mkdirs();
+        }
 
         blockLangDir = new File(blockDir, "lang/");
-//        itemLangDir = new File(itemDir, "lang/");
+        itemLangDir = new File(itemDir, "lang/");
 
         if (!blockLangDir.exists()) {
             blockLangDir.mkdirs();
         }
 
-//        if (!itemLangDir.exists()) {
-//            itemLangDir.mkdirs();
-//        }
+        if (!itemLangDir.exists()) {
+            itemLangDir.mkdirs();
+        }
 
         if (event.getSide() == Side.CLIENT) {
             blockTextureDir = new File(blockDir, "textures/");
-//            itemTextureDir = new File(itemDir, "textures/");
+            itemTextureDir = new File(itemDir, "textures/");
 
             if (!blockTextureDir.exists()) {
                 blockTextureDir.mkdirs();
             }
 
-//            if (!itemTextureDir.exists()) {
-//                itemTextureDir.mkdirs();
-//            }
+            if (!itemTextureDir.exists()) {
+                itemTextureDir.mkdirs();
+            }
         }
 
         proxy.preInit(event);
