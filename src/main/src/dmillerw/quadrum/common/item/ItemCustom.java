@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class ItemCustom extends Item {
 
-    private final ItemData data;
+    public final ItemData data;
 
     public ItemCustom(ItemData data) {
         super();

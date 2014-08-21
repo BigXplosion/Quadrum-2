@@ -34,5 +34,7 @@ public class CommonProxy {
                 GameRegistry.registerItem(item, itemData.name);
             }
         }
+
+        GameRegistry.registerFuelHandler(new FuelHandler());
     }
 }
