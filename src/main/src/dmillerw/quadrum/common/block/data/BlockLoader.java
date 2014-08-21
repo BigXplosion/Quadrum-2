@@ -2,34 +2,22 @@ package dmillerw.quadrum.common.block.data;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import com.google.gson.JsonObject;
 import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.lib.ExtensionFilter;
+import dmillerw.quadrum.common.lib.JsonVerification;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * @author dmillerw
  */
 public class BlockLoader {
-
-    public static Gson gson;
-
-    static {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        BlockLoader.gson = gsonBuilder.create();
-    }
 
     public static BlockData[] blocks;
 
@@ -38,51 +26,41 @@ public class BlockLoader {
 
         for (File file : Quadrum.blockDir.listFiles(new ExtensionFilter("json"))) {
             try {
-                BlockData blockData = gson.fromJson(new FileReader(file), BlockData.class);
-                if (blockData == null) {
-                    Quadrum.log(Level.WARN, "Completely failed to parse %s", file.getName());
-                    return;
-                }
+                JsonObject object = Quadrum.gson.fromJson(new FileReader(file), JsonObject.class);
 
-                if (blockData.name.isEmpty()) {
-                    Quadrum.log(Level.WARN, "Ran into an error while loading %s. A name must be defined!", file.getName());
-                    return;
-                }
-
-                Map<String, String> loweredMap = Maps.newHashMap();
-                for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
-                    loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
-                }
-                blockData.textureInfo.clear();
-                blockData.textureInfo.putAll(loweredMap);
-
-                for (Drop drop : blockData.drops) {
-                    if (drop.getDrop() == null) {
-                        Quadrum.log(Level.WARN, "Ran into an error while loading %s. %s is an invalid drop item!", file.getName(), drop.item);
-                    } else {
-                        list.add(blockData);
+                if (object != null && JsonVerification.verifyRequirements(file, object, BlockData.class)) {
+                    BlockData blockData = Quadrum.gson.fromJson(object, BlockData.class);
+                    Map<String, String> loweredMap = Maps.newHashMap();
+                    for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
+                        loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
                     }
+                    blockData.textureInfo.clear();
+                    blockData.textureInfo.putAll(loweredMap);
+
+                    list.add(blockData);
                 }
             } catch (IOException ex) {
-                Quadrum.log(Level.WARN, "Completely failed to parse %s. Reason: %s", file.getName(), ex.toString());
+                Quadrum.log(Level.WARN, "Completely failed to generate block from %s. Reason: %s", file.getName(), ex.toString());
             }
         }
         blocks = list.toArray(new BlockData[list.size()]);
+    }
 
-        // Scan for lang file
-        for (File file : Quadrum.blockLangDir.listFiles(new ExtensionFilter("lang"))) {
-            try {
-                String lang = file.getName().substring(0, file.getName().lastIndexOf("."));
-                Properties properties = new Properties();
-                properties.load(new FileInputStream(file));
-                HashMap<String, String> map = Maps.newHashMap();
-                for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                    map.put(entry.getKey().toString(), entry.getValue().toString());
+    public static void verifyDrops() {
+        for (BlockData blockData : blocks) {
+            List<Drop> dropList = Lists.newArrayList();
+            for (Drop drop : blockData.drops) {
+                if (drop.item.isEmpty()) {
+                    Quadrum.log(Level.WARN, "Block %s has a drop defined, but doesn't specify an item!");
+                } else {
+                    if (drop.getDrop() == null) {
+                        Quadrum.log(Level.WARN, "Block %s defines %s as a drop item, but that item doesn't exist", blockData.name, drop.item);
+                    } else {
+                        dropList.add(drop);
+                    }
                 }
-                LanguageRegistry.instance().injectLanguage(lang, map);
-            } catch (IOException ex) {
-                Quadrum.log(Level.WARN, "Completely failed to parse %s. Reason: %s", file.getName(), ex.toString());
             }
+            blockData.drops = dropList.toArray(new Drop[dropList.size()]);
         }
     }
 }

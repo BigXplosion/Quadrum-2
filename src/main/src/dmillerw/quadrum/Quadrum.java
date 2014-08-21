@@ -1,7 +1,10 @@
 package dmillerw.quadrum;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,6 +25,14 @@ public class Quadrum {
 
     @Mod.Instance("Quadrum")
     public static Quadrum instance;
+
+    public static Gson gson;
+
+    static {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        gson = gsonBuilder.create();
+    }
 
     public static Logger logger;
 
@@ -79,5 +90,10 @@ public class Quadrum {
         }
 
         proxy.preInit(event);
+    }
+
+    @Mod.EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+
     }
 }

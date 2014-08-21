@@ -23,11 +23,11 @@ import java.util.ArrayList;
 /**
  * @author dmillerw
  */
-public class BlockCustom extends Block {
+public class BlockQuadrum extends Block {
 
     public final BlockData data;
 
-    public BlockCustom(BlockData data) {
+    public BlockQuadrum(BlockData data) {
         super(data.getBlockMaterial());
 
         this.data = data;

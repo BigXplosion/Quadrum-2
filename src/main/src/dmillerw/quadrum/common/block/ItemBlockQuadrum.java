@@ -10,11 +10,11 @@ import net.minecraft.world.World;
 /**
  * @author dmillerw
  */
-public class ItemBlockCustom extends ItemBlock {
+public class ItemBlockQuadrum extends ItemBlock {
 
-    public ItemBlockCustom(Block block) {
+    public ItemBlockQuadrum(Block block) {
         super(block);
-        setMaxStackSize(((BlockCustom)block).data.maxStackSize);
+        setMaxStackSize(((BlockQuadrum)block).data.maxStackSize);
     }
 
     @Override
