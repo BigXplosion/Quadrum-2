@@ -4,10 +4,17 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import dmillerw.quadrum.common.data.BlockData;
 import dmillerw.quadrum.common.data.BlockLoader;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Map;
 
 /**
@@ -29,36 +36,87 @@ public class TextureLoader {
 
     public static final TextureLoader INSTANCE = new TextureLoader();
 
-    private Map<String, IIcon> blockTextures = Maps.newHashMap();
-    private Map<String, IIcon> itemTextures = Maps.newHashMap();
+    private TextureMap blockMap;
+    private TextureMap itemMap;
+
+    private Map<String, CustomAtlasSprite> blockMapping;
+    private Map<String, CustomAtlasSprite> itemMapping;
+
+    private void registerBlock(String string, CustomAtlasSprite icon) {
+        blockMap.setTextureEntry("quadrum:" + string, icon);
+        blockMapping.put(string, icon);
+    }
 
     public IIcon getBlockIcon(String name) {
-        return blockTextures.get(name);
+        return blockMapping.get(name);
     }
 
     public IIcon getItemIcon(String name) {
-        return itemTextures.get(name);
+        return itemMap.getTextureExtry("quadrum:" + name);
     }
 
     @SubscribeEvent
     public void onTextureStich(TextureStitchEvent.Pre event) {
-        blockTextures.clear();
-        itemTextures.clear();
-
         if (event.map.getTextureType() == 0) {
+            blockMap = event.map;
+            blockMapping = Maps.newHashMap();
             for (BlockData block : BlockLoader.blocks) {
-                IIcon icon = new CustomAtlasSprite(block.defaultTexture, true);
-                event.map.setTextureEntry(block.defaultTexture, (TextureAtlasSprite) icon);
-                blockTextures.put(block.defaultTexture, icon);
+                CustomAtlasSprite icon = new CustomAtlasSprite(block.defaultTexture, true);
+                registerBlock(block.defaultTexture, icon);
 
                 for (String string : block.textureInfo.values()) {
                     icon = new CustomAtlasSprite(string, true);
-                    event.map.setTextureEntry(string, (TextureAtlasSprite) icon);
-                    blockTextures.put(string, icon);
+                    registerBlock(string, icon);
                 }
             }
         } else if (event.map.getTextureType() == 1) {
+            itemMap = event.map;
+            itemMapping = Maps.newHashMap();
+        }
+    }
 
+    @SubscribeEvent
+    public void onTextureStitched(TextureStitchEvent.Post event) {
+        if (event.map.getTextureType() == 0) {
+            for (CustomAtlasSprite customAtlasSprite : blockMapping.values()) {
+                customAtlasSprite.restore();
+            }
+        } else if (event.map.getTextureType() == 1) {
+            for (CustomAtlasSprite customAtlasSprite : itemMapping.values()) {
+                customAtlasSprite.restore();
+            }
+        }
+    }
+
+    private void dumpTexture(File file) {
+        int format = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_COMPONENTS);
+        int width = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+        int height = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
+        int channels = 0;
+        int byteCount = 0;
+        switch (format) {
+            case GL11.GL_RGB: channels = 3; break;
+            case GL11.GL_RGBA:
+            default: channels = 4; break;
+        }
+        byteCount = width * height * channels;
+        ByteBuffer bytes = BufferUtils.createByteBuffer(byteCount);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, format, GL11.GL_UNSIGNED_BYTE, bytes);
+        final String ext = "PNG";
+        for (int x=0; x<width; x++) {
+            for (int y=0; y<height; y++) {
+                int i = (x + (width * y)) * channels;
+                int r = bytes.get(i) & 0xFF;
+                int g = bytes.get(i + 1) & 0xFF;
+                int b = bytes.get(i + 2) & 0xFF;
+                image.setRGB(x, height - (y + 1), (0xFF << 24) | (r << 16) | (g << 8) | b);
+            }
+        }
+        try {
+            ImageIO.write(image, ext, file);
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

@@ -26,15 +26,15 @@ public class Quadrum {
     public static Logger logger;
 
     public static File blockDir;
-//    public static File itemDir;
+    public static File itemDir;
 
     public static File blockLangDir;
-//    public static File itemLangDir;
+    public static File itemLangDir;
 
     @SideOnly(Side.CLIENT)
     public static File blockTextureDir;
-//    @SideOnly(Side.CLIENT)
-//    public static File itemTextureDir;
+    @SideOnly(Side.CLIENT)
+    public static File itemTextureDir;
 
     public static void log(Level level, String message, Object ... args) {
         logger.log(level, String.format(message, args));

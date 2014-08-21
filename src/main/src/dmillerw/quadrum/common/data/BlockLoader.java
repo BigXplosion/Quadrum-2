@@ -64,8 +64,6 @@ public class BlockLoader {
                 blockData.textureInfo.clear();
                 blockData.textureInfo.putAll(loweredMap);
 
-                System.out.println(blockData.textureInfo);
-
                 for (Drop drop : blockData.drops) {
                     if (drop.getDrop() == null) {
                         Quadrum.log(Level.WARN, "Ran into an error while loading %s. %s is an invalid drop item!", file.getName(), drop.item);
