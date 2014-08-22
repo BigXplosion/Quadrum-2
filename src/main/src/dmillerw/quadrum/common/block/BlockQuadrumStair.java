@@ -29,11 +29,11 @@ public class BlockQuadrumStair extends BlockStairs {
 
         this.data = data;
         setStepSound(data.getBlockSound());
-        setLightLevel((float) data.lightLevel / (float) 15);
         setHardness(data.hardness);
         setResistance(data.resistance);
         setBlockName(data.name);
         setCreativeTab(TabQuadrum.BLOCK);
+        setLightOpacity(0);
 
         if (data.requiresTool) {
             setHarvestLevel(data.getHarvestTool(), data.miningLevel);

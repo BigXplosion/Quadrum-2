@@ -29,7 +29,6 @@ public class BlockQuadrumFence extends BlockFence {
 
         this.data = data;
         setStepSound(data.getBlockSound());
-        setLightLevel((float) data.lightLevel / (float) 15);
         setHardness(data.hardness);
         setResistance(data.resistance);
         setBlockName(data.name);

@@ -48,6 +48,7 @@ public class BlockData {
     public float hardness = 2F;
     public float resistance = 2F;
 
+    @TypeSpecific(BlockType.BLOCK)
     @SerializedName("light-level")
     public int lightLevel = 0;
     @TypeSpecific(BlockType.BLOCK)
