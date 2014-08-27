@@ -15,15 +15,8 @@ import java.util.Map;
  */
 public class BlockData {
 
-    public static enum BlockType {
-        BLOCK,
-        SLAB,
-        STAIR,
-        FENCE
-    }
-
     /* INTERPRETED VALUES */
-    private BlockType blockType;
+    private TypeSpecific.Type blockType;
     private Material blockMaterial;
     private Block.SoundType blockSound;
 
@@ -36,7 +29,7 @@ public class BlockData {
     public String material = "";
     public String type = "block";
 
-    @TypeSpecific(BlockType.BLOCK)
+    @TypeSpecific(TypeSpecific.Type.BLOCK)
     @SerializedName("texture-info")
     public Map<String, String> textureInfo = Maps.newHashMap();
 
@@ -48,10 +41,10 @@ public class BlockData {
     public float hardness = 2F;
     public float resistance = 2F;
 
-    @TypeSpecific(BlockType.BLOCK)
+    @TypeSpecific(TypeSpecific.Type.BLOCK)
     @SerializedName("light-level")
     public int lightLevel = 0;
-    @TypeSpecific(BlockType.BLOCK)
+    @TypeSpecific(TypeSpecific.Type.BLOCK)
     @SerializedName("redstone-level")
     public int redstoneLevel = 0;
     @SerializedName("burn-time")
@@ -63,27 +56,27 @@ public class BlockData {
 
     public boolean transparent = false;
     public boolean collision = true;
-    @TypeSpecific(BlockType.BLOCK)
+    @TypeSpecific(TypeSpecific.Type.BLOCK)
     public boolean flammable = false;
-    @TypeSpecific(BlockType.BLOCK)
+    @TypeSpecific(TypeSpecific.Type.BLOCK)
     public boolean soil = false;
     @SerializedName("require-tool")
     public boolean requiresTool = true;
     @SerializedName("drops-self")
     public boolean dropsSelf = true;
 
-    public BlockType getBlockType() {
+    public TypeSpecific.Type getBlockType() {
         if (blockType == null) {
             if (type.equalsIgnoreCase("block")) {
-                blockType = BlockType.BLOCK;
+                blockType = TypeSpecific.Type.BLOCK;
             } else if (type.equalsIgnoreCase("slab")) {
-                blockType = BlockType.SLAB;
+                blockType = TypeSpecific.Type.BLOCK_SLAB;
             } else if (type.equalsIgnoreCase("stair") || type.equalsIgnoreCase("stairs")) {
-                blockType = BlockType.STAIR;
+                blockType = TypeSpecific.Type.BLOCK_STAIR;
             } else if (type.equalsIgnoreCase("fence")) {
-                blockType = BlockType.FENCE;
+                blockType = TypeSpecific.Type.BLOCK_FENCE;
             } else {
-                blockType = BlockType.BLOCK;
+                blockType = TypeSpecific.Type.BLOCK;
             }
         }
         return blockType;

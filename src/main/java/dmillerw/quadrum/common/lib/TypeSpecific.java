@@ -1,7 +1,5 @@
 package dmillerw.quadrum.common.lib;
 
-import dmillerw.quadrum.common.block.data.BlockData;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,5 +11,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TypeSpecific {
-    public BlockData.BlockType value();
+    public static enum Type {
+        BLOCK,
+        BLOCK_STAIR,
+        BLOCK_SLAB,
+        BLOCK_FENCE,
+        ITEM,
+        ITEM_FOOD,
+    }
+    public Type value();
 }
