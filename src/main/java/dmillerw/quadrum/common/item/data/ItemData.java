@@ -27,6 +27,9 @@ public class ItemData {
     public float foodSaturation = 0.6F;
 
     @TypeSpecific(TypeSpecific.Type.ITEM_FOOD)
+    @SerializedName("eat-duration")
+    public int eatDuration = 32;
+    @TypeSpecific(TypeSpecific.Type.ITEM_FOOD)
     @SerializedName("food-amount")
     public int foodAmount = 0;
     @SerializedName("burn-time")
