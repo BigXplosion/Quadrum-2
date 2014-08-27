@@ -10,6 +10,7 @@ import dmillerw.quadrum.common.lib.ExtensionFilter;
 import dmillerw.quadrum.common.lib.JsonVerification;
 import dmillerw.quadrum.common.lib.TypeSpecific;
 import dmillerw.quadrum.common.lib.data.Drop;
+import net.minecraft.block.Block;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
@@ -25,11 +26,10 @@ import java.util.Map;
  */
 public class BlockLoader {
 
-    public static BlockData[] blocks;
+    public static Map<String, Block> blockMap = Maps.newHashMap();
+    public static Map<String, BlockData> blockDataMap = Maps.newHashMap();
 
     public static void initialize() {
-        List<BlockData> list = Lists.newArrayList();
-
         for (File file : Quadrum.blockDir.listFiles(new ExtensionFilter("json"))) {
             try {
                 JsonObject jsonObject = Quadrum.gson.fromJson(new FileReader(file), JsonObject.class);
@@ -62,17 +62,16 @@ public class BlockLoader {
                     blockData.textureInfo.clear();
                     blockData.textureInfo.putAll(loweredMap);
 
-                    list.add(blockData);
+                    blockDataMap.put(blockData.name, blockData);
                 }
             } catch (IOException ex) {
                 Quadrum.log(Level.WARN, "Completely failed to generate block from %s. Reason: %s", file.getName(), ex.toString());
             }
         }
-        blocks = list.toArray(new BlockData[list.size()]);
     }
 
     public static void verifyDrops() {
-        for (BlockData blockData : blocks) {
+        for (BlockData blockData : blockDataMap.values()) {
             List<Drop> dropList = Lists.newArrayList();
             for (Drop drop : blockData.drops) {
                 if (drop.item.isEmpty()) {

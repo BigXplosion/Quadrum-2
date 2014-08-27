@@ -25,17 +25,19 @@ public class CommonProxy {
         LanguageHelper.loadDirectory(Quadrum.blockLangDir);
         LanguageHelper.loadDirectory(Quadrum.itemLangDir);
 
-        for (BlockData blockData : BlockLoader.blocks) {
+        for (BlockData blockData : BlockLoader.blockDataMap.values()) {
             if (blockData != null) {
                 Block block = blockData.getBlockType().createBlock(blockData);
                 GameRegistry.registerBlock(block, ItemBlockQuadrum.class, blockData.name);
+                BlockLoader.blockMap.put(blockData.name, block);
             }
         }
 
-        for (ItemData itemData : ItemLoader.items) {
+        for (ItemData itemData : ItemLoader.itemDataMap.values()) {
             if (itemData != null) {
                 Item item = itemData.getItemType().createItem(itemData);
                 GameRegistry.registerItem(item, itemData.name);
+                ItemLoader.itemMap.put(itemData.name, item);
             }
         }
 

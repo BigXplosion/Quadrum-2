@@ -65,6 +65,7 @@ public class BlockData {
     @SerializedName("drops-self")
     public boolean dropsSelf = true;
 
+    /* START GETTERS */
     public TypeSpecific.Type getBlockType() {
         return TypeSpecific.Type.fromString(type, TypeSpecific.Type.BLOCK);
     }
@@ -129,5 +130,10 @@ public class BlockData {
             return "pickaxe";
         }
         return "pickaxe";
+    }
+    /* END GETTERS */
+
+    public void reload(Block parent) {
+
     }
 }

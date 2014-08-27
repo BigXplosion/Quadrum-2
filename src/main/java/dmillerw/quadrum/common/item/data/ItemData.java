@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.common.lib.Required;
 import dmillerw.quadrum.common.lib.TypeSpecific;
 import dmillerw.quadrum.common.lib.data.Effect;
+import net.minecraft.item.Item;
 
 /**
  * @author dmillerw
@@ -41,10 +42,19 @@ public class ItemData {
     @TypeSpecific(TypeSpecific.Type.ITEM_FOOD)
     @SerializedName("wolf-food")
     public boolean wolfFood = false;
+    @TypeSpecific(TypeSpecific.Type.ITEM_FOOD)
+    @SerializedName("always-editble")
+    public boolean alwaysEdible = false;
     @SerializedName("has-effect")
     public boolean hasEffect = false;
 
+    /* START GETTERS */
     public TypeSpecific.Type getItemType() {
         return TypeSpecific.Type.fromString(type, TypeSpecific.Type.ITEM);
+    }
+    /* END GETTERS */
+
+    public void reload(Item parent) {
+
     }
 }

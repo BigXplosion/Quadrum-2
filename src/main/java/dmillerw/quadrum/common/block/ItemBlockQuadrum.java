@@ -1,6 +1,7 @@
 package dmillerw.quadrum.common.block;
 
-import dmillerw.quadrum.common.block.data.BlockData;
+import dmillerw.quadrum.common.block.data.BlockLoader;
+import dmillerw.quadrum.common.lib.IQuadrumBlock;
 import dmillerw.quadrum.common.lib.TypeSpecific;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,26 +15,22 @@ import net.minecraft.world.World;
  */
 public class ItemBlockQuadrum extends ItemBlock {
 
-    private final BlockData data;
+    private final String name;
 
     public ItemBlockQuadrum(Block block) {
         super(block);
-        if (block instanceof BlockQuadrumSlab) {
-            data = ((BlockQuadrumSlab)block).data;
-        } else if (block instanceof BlockQuadrumStair) {
-            data = ((BlockQuadrumStair)block).data;
-        } else if (block instanceof BlockQuadrumFence) {
-            data = ((BlockQuadrumFence)block).data;
+        if (block instanceof IQuadrumBlock) {
+            name = ((IQuadrumBlock) block).getName();
+            setMaxStackSize(BlockLoader.blockDataMap.get(name).maxStackSize);
         } else {
-            data = ((BlockQuadrum)block).data;
+            throw new RuntimeException("A non Quadrum block tried to use the Quadrum ItemBlock");
         }
-        setMaxStackSize(data.maxStackSize);
     }
 
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
         boolean result = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-        if (data.getBlockType() == TypeSpecific.Type.BLOCK && result) {
+        if (BlockLoader.blockDataMap.get(name).getBlockType() == TypeSpecific.Type.BLOCK && result) {
             int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
             if (l == 0) world.setBlockMetadataWithNotify(x, y, z, 2, 2);
             if (l == 1) world.setBlockMetadataWithNotify(x, y, z, 5, 2);

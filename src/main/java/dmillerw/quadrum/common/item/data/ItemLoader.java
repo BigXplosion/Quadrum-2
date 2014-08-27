@@ -1,6 +1,7 @@
 package dmillerw.quadrum.common.item.data;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -10,6 +11,7 @@ import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.lib.ExtensionFilter;
 import dmillerw.quadrum.common.lib.JsonVerification;
 import dmillerw.quadrum.common.lib.TypeSpecific;
+import net.minecraft.item.Item;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
@@ -25,11 +27,10 @@ import java.util.Map;
  */
 public class ItemLoader {
 
-    public static ItemData[] items;
+    public static Map<String, Item> itemMap = Maps.newHashMap();
+    public static Map<String, ItemData> itemDataMap = Maps.newHashMap();
 
     public static void initialize() {
-        List<ItemData> list = Lists.newArrayList();
-
         for (File file : Quadrum.itemDir.listFiles(new ExtensionFilter("json"))) {
             try {
                 JsonObject jsonObject = Quadrum.gson.fromJson(new FileReader(file), JsonObject.class);
@@ -56,7 +57,7 @@ public class ItemLoader {
                             }
                         }
 
-                        list.add(itemData);
+                        itemDataMap.put(itemData.name, itemData);
                     } catch (JsonSyntaxException ex) {
                         Quadrum.log(Level.WARN, "Ran into an issue while parsing %s. Reason: %s", file.getName(), ex.toString());
                     }
@@ -65,6 +66,5 @@ public class ItemLoader {
                 Quadrum.log(Level.WARN, "Completely failed to generate item from %s. Reason: %s", file.getName(), ex.toString());
             }
         }
-        items = list.toArray(new ItemData[list.size()]);
     }
 }

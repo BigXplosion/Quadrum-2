@@ -1,6 +1,7 @@
 package dmillerw.quadrum.common.item;
 
 import dmillerw.quadrum.common.item.data.ItemData;
+import dmillerw.quadrum.common.item.data.ItemLoader;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ public class ItemQuadrumDrink extends ItemQuadrum {
             --stack.stackSize;
         }
 
+        ItemData data = ItemLoader.itemDataMap.get(name);
+
         if (!world.isRemote) {
             player.addPotionEffect(new PotionEffect(data.consumeEffect.id, data.consumeEffect.duration * 20, data.consumeEffect.amplifier));
         }
@@ -31,7 +34,7 @@ public class ItemQuadrumDrink extends ItemQuadrum {
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
-        return data.consumeDuration;
+        return ItemLoader.itemDataMap.get(name).consumeDuration;
     }
 
     @Override
@@ -39,11 +42,8 @@ public class ItemQuadrumDrink extends ItemQuadrum {
         return EnumAction.drink;
     }
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    public ItemStack onItemRightClick(ItemStack p_77659_1_, World p_77659_2_, EntityPlayer p_77659_3_) {
-        p_77659_3_.setItemInUse(p_77659_1_, this.getMaxItemUseDuration(p_77659_1_));
-        return p_77659_1_;
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+        return stack;
     }
 }

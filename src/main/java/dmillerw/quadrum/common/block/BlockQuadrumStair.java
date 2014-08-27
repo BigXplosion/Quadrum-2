@@ -1,11 +1,12 @@
 package dmillerw.quadrum.common.block;
 
-import com.google.common.collect.Lists;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.client.texture.TextureLoader;
 import dmillerw.quadrum.common.block.data.BlockData;
-import dmillerw.quadrum.common.lib.data.Drop;
+import dmillerw.quadrum.common.block.data.BlockLoader;
+import dmillerw.quadrum.common.lib.BlockStaticMethodHandler;
+import dmillerw.quadrum.common.lib.IQuadrumBlock;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,14 +21,15 @@ import java.util.ArrayList;
 /**
  * @author dmillerw
  */
-public class BlockQuadrumStair extends BlockStairs {
+public class BlockQuadrumStair extends BlockStairs implements IQuadrumBlock {
 
-    public final BlockData data;
+    public final String name;
 
     public BlockQuadrumStair(BlockData data) {
         super(data.getSimilarBlock(), 0);
 
-        this.data = data;
+        this.name = data.name;
+
         setStepSound(data.getBlockSound());
         setHardness(data.hardness);
         setResistance(data.resistance);
@@ -47,7 +49,7 @@ public class BlockQuadrumStair extends BlockStairs {
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
-        return data.transparent ? 1 : 0;
+        return BlockLoader.blockDataMap.get(name).transparent ? 1 : 0;
     }
 
     @Override
@@ -67,23 +69,21 @@ public class BlockQuadrumStair extends BlockStairs {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return TextureLoader.getBlockIcon(data, "default");
+        return TextureLoader.getBlockIcon(BlockLoader.blockDataMap.get(name), "default");
     }
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        if (data.drops.length == 0 && data.dropsSelf) {
-            return super.getDrops(world, x, y, z, metadata, fortune);
-        }
-        ArrayList<ItemStack> stackList = Lists.newArrayList();
-        for (Drop drop : data.drops) {
-            stackList.add(new ItemStack(drop.getDrop(), drop.getDropAmount(), drop.damage));
-        }
-        return stackList;
+        return BlockStaticMethodHandler.getDrops(this, BlockLoader.blockDataMap.get(name), world, x, y, z, metadata, fortune);
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return data.collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
+        return BlockLoader.blockDataMap.get(name).collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

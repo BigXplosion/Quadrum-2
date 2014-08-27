@@ -1,11 +1,12 @@
 package dmillerw.quadrum.common.block;
 
-import com.google.common.collect.Lists;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.client.texture.TextureLoader;
 import dmillerw.quadrum.common.block.data.BlockData;
-import dmillerw.quadrum.common.lib.data.Drop;
+import dmillerw.quadrum.common.block.data.BlockLoader;
+import dmillerw.quadrum.common.lib.BlockStaticMethodHandler;
+import dmillerw.quadrum.common.lib.IQuadrumBlock;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,14 +24,15 @@ import java.util.ArrayList;
 /**
  * @author dmillerw
  */
-public class BlockQuadrum extends Block {
+public class BlockQuadrum extends Block implements IQuadrumBlock {
 
-    public final BlockData data;
+    public final String name;
 
     public BlockQuadrum(BlockData data) {
         super(data.getBlockMaterial());
 
-        this.data = data;
+        this.name = data.name;
+
         setStepSound(data.getBlockSound());
         setLightLevel((float) data.lightLevel / (float) 15);
         setHardness(data.hardness);
@@ -53,7 +55,7 @@ public class BlockQuadrum extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
-        return data.transparent ? 1 : 0;
+        return BlockLoader.blockDataMap.get(name).transparent ? 1 : 0;
     }
 
     @Override
@@ -66,6 +68,8 @@ public class BlockQuadrum extends Block {
         ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
         ForgeDirection front = ForgeDirection.getOrientation(meta);
         if (meta == 0) front = ForgeDirection.SOUTH;
+
+        BlockData data = BlockLoader.blockDataMap.get(name);
 
         if (forgeSide == front) {
             return TextureLoader.getBlockIcon(data, "front");
@@ -91,48 +95,46 @@ public class BlockQuadrum extends Block {
 
     @Override
     public boolean renderAsNormalBlock() {
-        return !data.transparent;
+        return !BlockLoader.blockDataMap.get(name).transparent;
     }
 
     @Override
     public boolean isOpaqueCube() {
-        return data != null && !data.transparent;
+        return BlockLoader.blockDataMap.get(name) != null && !BlockLoader.blockDataMap.get(name).transparent;
     }
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        ArrayList<ItemStack> stackList = Lists.newArrayList();
-        if (data.dropsSelf) {
-            stackList.addAll(super.getDrops(world, x, y, z, metadata, fortune));
-        }
-        for (Drop drop : data.drops) {
-            stackList.add(new ItemStack(drop.getDrop(), drop.getDropAmount(), drop.damage));
-        }
-        return stackList;
+        return BlockStaticMethodHandler.getDrops(this, BlockLoader.blockDataMap.get(name), world, x, y, z, metadata, fortune);
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return data.collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
+        return BlockLoader.blockDataMap.get(name).collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
     }
 
     @Override
     public boolean canProvidePower() {
-        return data.redstoneLevel > 0;
+        return BlockLoader.blockDataMap.get(name).redstoneLevel > 0;
     }
 
     @Override
     public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-        return data.redstoneLevel;
+        return BlockLoader.blockDataMap.get(name).redstoneLevel;
     }
 
     @Override
     public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return data.flammable;
+        return BlockLoader.blockDataMap.get(name).flammable;
     }
 
     @Override
     public boolean canSustainPlant(IBlockAccess world, int x, int y, int z, ForgeDirection direction, IPlantable plantable) {
-        return data.soil;
+        return BlockLoader.blockDataMap.get(name).soil;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
