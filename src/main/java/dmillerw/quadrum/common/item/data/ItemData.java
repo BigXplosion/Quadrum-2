@@ -1,10 +1,13 @@
 package dmillerw.quadrum.common.item.data;
 
+import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.common.lib.Required;
 import dmillerw.quadrum.common.lib.TypeSpecific;
 import dmillerw.quadrum.common.lib.data.Effect;
 import net.minecraft.item.Item;
+
+import java.util.Map;
 
 /**
  * @author dmillerw
@@ -16,6 +19,9 @@ public class ItemData {
     @Required
     public String texture = "";
     public String type = "";
+
+    @SerializedName("mob-drops")
+    public Map<String, Float> mobDrops = Maps.newHashMap();
 
     @TypeSpecific({TypeSpecific.Type.ITEM_FOOD, TypeSpecific.Type.ITEM_DRINK})
     @SerializedName("consume-effect")

@@ -57,6 +57,13 @@ public class ItemLoader {
                             }
                         }
 
+                        Map loweredMap = Maps.newHashMap();
+                        for (Map.Entry<String, Float> entry : itemData.mobDrops.entrySet()) {
+                            loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
+                        }
+                        itemData.mobDrops.clear();
+                        itemData.mobDrops.putAll(loweredMap);
+
                         itemDataMap.put(itemData.name, itemData);
                     } catch (JsonSyntaxException ex) {
                         Quadrum.log(Level.WARN, "Ran into an issue while parsing %s. Reason: %s", file.getName(), ex.toString());

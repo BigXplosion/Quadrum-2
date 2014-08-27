@@ -1,4 +1,4 @@
-package dmillerw.quadrum.common.core;
+package dmillerw.quadrum.common.handler;
 
 import cpw.mods.fml.common.IFuelHandler;
 import dmillerw.quadrum.common.block.data.BlockLoader;

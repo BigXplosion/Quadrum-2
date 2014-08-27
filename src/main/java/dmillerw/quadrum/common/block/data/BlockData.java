@@ -33,6 +33,9 @@ public class BlockData {
     @SerializedName("texture-info")
     public Map<String, String> textureInfo = Maps.newHashMap();
 
+    @SerializedName("mob-drops")
+    public Map<String, Float> mobDrops = Maps.newHashMap();
+
     @SerializedName("ore-dictionary")
     public String[] oreDictionary = new String[0];
 

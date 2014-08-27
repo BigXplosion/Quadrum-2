@@ -55,12 +55,19 @@ public class BlockLoader {
                         }
                     }
 
-                    Map<String, String> loweredMap = Maps.newHashMap();
+                    Map loweredMap = Maps.newHashMap();
                     for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
                         loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
                     }
                     blockData.textureInfo.clear();
                     blockData.textureInfo.putAll(loweredMap);
+
+                    loweredMap.clear();
+                    for (Map.Entry<String, Float> entry : blockData.mobDrops.entrySet()) {
+                        loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
+                    }
+                    blockData.mobDrops.clear();
+                    blockData.mobDrops.putAll(loweredMap);
 
                     blockDataMap.put(blockData.name, blockData);
                 }

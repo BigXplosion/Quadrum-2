@@ -7,11 +7,14 @@ import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.block.ItemBlockQuadrum;
 import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.block.data.BlockLoader;
+import dmillerw.quadrum.common.handler.EntityDropHandler;
+import dmillerw.quadrum.common.handler.FuelHandler;
 import dmillerw.quadrum.common.item.data.ItemData;
 import dmillerw.quadrum.common.item.data.ItemLoader;
 import dmillerw.quadrum.common.lib.LanguageHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * @author dmillerw
@@ -42,6 +45,7 @@ public class CommonProxy {
         }
 
         GameRegistry.registerFuelHandler(new FuelHandler());
+        MinecraftForge.EVENT_BUS.register(new EntityDropHandler());
     }
 
     public void postInit(FMLPostInitializationEvent event) {
