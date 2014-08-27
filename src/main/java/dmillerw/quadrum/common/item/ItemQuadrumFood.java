@@ -24,6 +24,10 @@ public class ItemQuadrumFood extends ItemFood {
 
         this.data = data;
 
+        if (data.consumeEffect != null && data.consumeEffect.getPotionEffect() != null) {
+            setPotionEffect(data.consumeEffect.getPotionEffect().id, data.consumeEffect.duration, data.consumeEffect.amplifier, data.consumeEffect.probability);
+        }
+
         setUnlocalizedName(data.name);
         setMaxStackSize(data.maxStackSize);
         setCreativeTab(TabQuadrum.ITEM);
@@ -35,7 +39,7 @@ public class ItemQuadrumFood extends ItemFood {
 
     @Override
     public int getMaxItemUseDuration(ItemStack p_77626_1_) {
-        return data.eatDuration;
+        return data.consumeDuration;
     }
 
     @Override

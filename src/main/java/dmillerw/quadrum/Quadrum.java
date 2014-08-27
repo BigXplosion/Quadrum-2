@@ -9,6 +9,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.common.core.CommonProxy;
+import dmillerw.quadrum.common.lib.data.Effect;
+import dmillerw.quadrum.common.lib.data.EffectDeserializer;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
@@ -30,6 +32,7 @@ public class Quadrum {
 
     static {
         GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Effect.class, new EffectDeserializer());
         gsonBuilder.setPrettyPrinting();
         gson = gsonBuilder.create();
     }

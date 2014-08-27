@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.common.lib.Required;
 import dmillerw.quadrum.common.lib.TypeSpecific;
+import dmillerw.quadrum.common.lib.data.Drop;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,6 @@ import java.util.Map;
 public class BlockData {
 
     /* INTERPRETED VALUES */
-    private TypeSpecific.Type blockType;
     private Material blockMaterial;
     private Block.SoundType blockSound;
 
@@ -66,20 +66,7 @@ public class BlockData {
     public boolean dropsSelf = true;
 
     public TypeSpecific.Type getBlockType() {
-        if (blockType == null) {
-            if (type.equalsIgnoreCase("block")) {
-                blockType = TypeSpecific.Type.BLOCK;
-            } else if (type.equalsIgnoreCase("slab")) {
-                blockType = TypeSpecific.Type.BLOCK_SLAB;
-            } else if (type.equalsIgnoreCase("stair") || type.equalsIgnoreCase("stairs")) {
-                blockType = TypeSpecific.Type.BLOCK_STAIR;
-            } else if (type.equalsIgnoreCase("fence")) {
-                blockType = TypeSpecific.Type.BLOCK_FENCE;
-            } else {
-                blockType = TypeSpecific.Type.BLOCK;
-            }
-        }
-        return blockType;
+        return TypeSpecific.Type.fromString(type, TypeSpecific.Type.BLOCK);
     }
 
     public Material getBlockMaterial() {

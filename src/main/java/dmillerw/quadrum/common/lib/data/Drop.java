@@ -1,4 +1,4 @@
-package dmillerw.quadrum.common.block.data;
+package dmillerw.quadrum.common.lib.data;
 
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.item.Item;

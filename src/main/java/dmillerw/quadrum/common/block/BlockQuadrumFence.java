@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.client.texture.TextureLoader;
 import dmillerw.quadrum.common.block.data.BlockData;
-import dmillerw.quadrum.common.block.data.Drop;
+import dmillerw.quadrum.common.lib.data.Drop;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.BlockFence;
 import net.minecraft.client.renderer.texture.IIconRegister;

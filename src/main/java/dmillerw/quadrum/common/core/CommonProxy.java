@@ -4,11 +4,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import dmillerw.quadrum.Quadrum;
-import dmillerw.quadrum.common.block.*;
+import dmillerw.quadrum.common.block.ItemBlockQuadrum;
 import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.block.data.BlockLoader;
-import dmillerw.quadrum.common.item.ItemQuadrum;
-import dmillerw.quadrum.common.item.ItemQuadrumFood;
 import dmillerw.quadrum.common.item.data.ItemData;
 import dmillerw.quadrum.common.item.data.ItemLoader;
 import dmillerw.quadrum.common.lib.LanguageHelper;
@@ -29,36 +27,14 @@ public class CommonProxy {
 
         for (BlockData blockData : BlockLoader.blocks) {
             if (blockData != null) {
-                Block block = null;
-                switch (blockData.getBlockType()) {
-                    case BLOCK_STAIR:
-                        block = new BlockQuadrumStair(blockData);
-                        break;
-                    case BLOCK_SLAB:
-                        block = new BlockQuadrumSlab(blockData);
-                        break;
-                    case BLOCK_FENCE:
-                        block = new BlockQuadrumFence(blockData);
-                        break;
-                    default:
-                        block = new BlockQuadrum(blockData);
-                        break;
-                }
+                Block block = blockData.getBlockType().createBlock(blockData);
                 GameRegistry.registerBlock(block, ItemBlockQuadrum.class, blockData.name);
             }
         }
 
         for (ItemData itemData : ItemLoader.items) {
             if (itemData != null) {
-                Item item = null;
-                switch (itemData.getItemType()) {
-                    case ITEM_FOOD:
-                        item = new ItemQuadrumFood(itemData);
-                        break;
-                    default:
-                        item = new ItemQuadrum(itemData);
-
-                }
+                Item item = itemData.getItemType().createItem(itemData);
                 GameRegistry.registerItem(item, itemData.name);
             }
         }

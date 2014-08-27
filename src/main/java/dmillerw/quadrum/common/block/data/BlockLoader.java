@@ -9,12 +9,14 @@ import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.lib.ExtensionFilter;
 import dmillerw.quadrum.common.lib.JsonVerification;
 import dmillerw.quadrum.common.lib.TypeSpecific;
+import dmillerw.quadrum.common.lib.data.Drop;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +50,7 @@ public class BlockLoader {
 
                         TypeSpecific typeSpecific = field.getAnnotation(TypeSpecific.class);
 
-                        if (typeSpecific != null && typeSpecific.value() != blockData.getBlockType() && keys.contains(name)) {
+                        if (typeSpecific != null && !Arrays.asList(typeSpecific.value()).contains(blockData.getBlockType()) && keys.contains(name)) {
                             Quadrum.log(Level.INFO, "%s contains the key %s, but that key can't be applied to the %s block type. It will be ignored.", file.getName(), name, blockData.getBlockType());
                         }
                     }
