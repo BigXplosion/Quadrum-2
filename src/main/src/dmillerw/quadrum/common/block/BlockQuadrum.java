@@ -101,10 +101,10 @@ public class BlockQuadrum extends Block {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        if (data.drops.length == 0 && data.dropsSelf) {
-            return super.getDrops(world, x, y, z, metadata, fortune);
-        }
         ArrayList<ItemStack> stackList = Lists.newArrayList();
+        if (data.dropsSelf) {
+            stackList.addAll(super.getDrops(world, x, y, z, metadata, fortune));
+        }
         for (Drop drop : data.drops) {
             stackList.add(new ItemStack(drop.getDrop(), drop.getDropAmount(), drop.damage));
         }
