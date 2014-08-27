@@ -34,6 +34,11 @@ public class ItemQuadrumFood extends ItemFood {
     }
 
     @Override
+    public int getMaxItemUseDuration(ItemStack p_77626_1_) {
+        return data.eatDuration;
+    }
+
+    @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean debug) {
         for (String str : data.lore) {
             list.add(str);
