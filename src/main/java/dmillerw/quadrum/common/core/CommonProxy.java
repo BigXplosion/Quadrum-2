@@ -8,6 +8,7 @@ import dmillerw.quadrum.common.block.*;
 import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.block.data.BlockLoader;
 import dmillerw.quadrum.common.item.ItemQuadrum;
+import dmillerw.quadrum.common.item.ItemQuadrumFood;
 import dmillerw.quadrum.common.item.data.ItemData;
 import dmillerw.quadrum.common.item.data.ItemLoader;
 import dmillerw.quadrum.common.lib.LanguageHelper;
@@ -30,13 +31,13 @@ public class CommonProxy {
             if (blockData != null) {
                 Block block = null;
                 switch (blockData.getBlockType()) {
-                    case STAIR:
+                    case BLOCK_STAIR:
                         block = new BlockQuadrumStair(blockData);
                         break;
-                    case SLAB:
+                    case BLOCK_SLAB:
                         block = new BlockQuadrumSlab(blockData);
                         break;
-                    case FENCE:
+                    case BLOCK_FENCE:
                         block = new BlockQuadrumFence(blockData);
                         break;
                     default:
@@ -49,7 +50,15 @@ public class CommonProxy {
 
         for (ItemData itemData : ItemLoader.items) {
             if (itemData != null) {
-                Item item = new ItemQuadrum(itemData);
+                Item item = null;
+                switch (itemData.getItemType()) {
+                    case ITEM_FOOD:
+                        item = new ItemQuadrumFood(itemData);
+                        break;
+                    default:
+                        item = new ItemQuadrum(itemData);
+
+                }
                 GameRegistry.registerItem(item, itemData.name);
             }
         }
