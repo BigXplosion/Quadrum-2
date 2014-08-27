@@ -1,6 +1,7 @@
 package dmillerw.quadrum.common.block;
 
 import dmillerw.quadrum.common.block.data.BlockData;
+import dmillerw.quadrum.common.lib.TypeSpecific;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -32,7 +33,7 @@ public class ItemBlockQuadrum extends ItemBlock {
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
         boolean result = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-        if (data.getBlockType() == BlockData.BlockType.BLOCK && result) {
+        if (data.getBlockType() == TypeSpecific.Type.BLOCK && result) {
             int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
             if (l == 0) world.setBlockMetadataWithNotify(x, y, z, 2, 2);
             if (l == 1) world.setBlockMetadataWithNotify(x, y, z, 5, 2);
