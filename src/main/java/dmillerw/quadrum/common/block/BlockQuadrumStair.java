@@ -10,6 +10,7 @@ import dmillerw.quadrum.common.lib.IQuadrumBlock;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -65,6 +66,12 @@ public class BlockQuadrumStair extends BlockStairs implements IQuadrumBlock {
     @Override
     public IIcon getIcon(int side, int meta) {
         return TextureLoader.getBlockIcon(BlockLoader.blockDataMap.get(name), "default");
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Item getItem(World world, int x, int y, int z) {
+        return Item.getItemFromBlock(this);
     }
 
     @Override

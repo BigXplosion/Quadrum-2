@@ -10,6 +10,7 @@ import dmillerw.quadrum.common.lib.IQuadrumBlock;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -70,6 +71,12 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumBlock {
     @Override
     public String func_150002_b(int p_150002_1_) {
         return "";
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public Item getItem(World world, int x, int y, int z) {
+        return Item.getItemFromBlock(this);
     }
 
     @Override
