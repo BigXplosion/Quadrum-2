@@ -15,6 +15,7 @@ import dmillerw.quadrum.common.lib.LanguageHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * @author dmillerw
@@ -33,6 +34,10 @@ public class CommonProxy {
                 Block block = blockData.getBlockType().createBlock(blockData);
                 GameRegistry.registerBlock(block, ItemBlockQuadrum.class, blockData.name);
                 BlockLoader.blockMap.put(blockData.name, block);
+
+                for (String string : blockData.oreDictionary) {
+                    OreDictionary.registerOre(string, block);
+                }
             }
         }
 
@@ -41,6 +46,10 @@ public class CommonProxy {
                 Item item = itemData.getItemType().createItem(itemData);
                 GameRegistry.registerItem(item, itemData.name);
                 ItemLoader.itemMap.put(itemData.name, item);
+
+                for (String string : itemData.oreDictionary) {
+                    OreDictionary.registerOre(string, item);
+                }
             }
         }
 

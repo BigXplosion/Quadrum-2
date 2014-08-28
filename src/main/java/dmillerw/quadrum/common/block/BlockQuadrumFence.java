@@ -14,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
@@ -38,10 +37,6 @@ public class BlockQuadrumFence extends BlockFence implements IQuadrumBlock {
 
         if (data.requiresTool) {
             setHarvestLevel(data.getHarvestTool(), data.miningLevel);
-        }
-
-        for (String string : data.oreDictionary) {
-            OreDictionary.registerOre(string, this);
         }
     }
 

@@ -17,7 +17,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
@@ -45,10 +44,6 @@ public class BlockQuadrum extends Block implements IQuadrumBlock {
 
         if (data.requiresTool) {
             setHarvestLevel(data.getHarvestTool(), data.miningLevel);
-        }
-
-        for (String string : data.oreDictionary) {
-            OreDictionary.registerOre(string, this);
         }
     }
 

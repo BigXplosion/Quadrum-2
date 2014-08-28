@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
@@ -37,10 +36,6 @@ public class ItemQuadrumFood extends ItemFood implements IQuadrumItem {
         setUnlocalizedName(data.name);
         setMaxStackSize(data.maxStackSize);
         setCreativeTab(TabQuadrum.ITEM);
-
-        for (String string : data.oreDictionary) {
-            OreDictionary.registerOre(string, this);
-        }
     }
 
     @Override

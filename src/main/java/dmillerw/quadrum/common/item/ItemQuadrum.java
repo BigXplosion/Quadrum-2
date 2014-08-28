@@ -30,9 +30,7 @@ public class ItemQuadrum extends Item implements IQuadrumItem {
         setMaxStackSize(data.maxStackSize);
         setCreativeTab(TabQuadrum.ITEM);
 
-        for (String string : data.oreDictionary) {
-            OreDictionary.registerOre(string, this);
-        }
+
     }
 
     @Override
