@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.lib.ExtensionFilter;
@@ -18,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,48 +34,67 @@ public class BlockLoader {
     public static void initialize() {
         for (File file : Quadrum.blockDir.listFiles(new ExtensionFilter("json"))) {
             try {
-                JsonObject jsonObject = Quadrum.gson.fromJson(new FileReader(file), JsonObject.class);
-
-                if (jsonObject != null && JsonVerification.verifyRequirements(file, jsonObject, BlockData.class)) {
-                    BlockData blockData = Quadrum.gson.fromJson(jsonObject, BlockData.class);
-
-                    List<String> keys = Lists.newArrayList();
-                    for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-                        keys.add(entry.getKey());
-                    }
-
-                    for (Field field : BlockData.class.getDeclaredFields()) {
-                        String name = field.getName();
-                        if (field.getAnnotation(SerializedName.class) != null) {
-                            name = field.getAnnotation(SerializedName.class).value();
+                JsonElement jsonElement = Quadrum.gson.fromJson(new FileReader(file), JsonElement.class);
+                if (jsonElement != null) {
+                    if (jsonElement.isJsonArray()) {
+                        Iterator<JsonElement> iterator = jsonElement.getAsJsonArray().iterator();
+                        while (iterator.hasNext()) {
+                            JsonElement element = iterator.next();
+                            if (element != null && element.isJsonObject()) {
+                                if (JsonVerification.verifyRequirements(file, element.getAsJsonObject(), BlockData.class)) {
+                                    parse(file.getName(), (JsonObject) iterator.next());
+                                }
+                            }
                         }
-
-                        TypeSpecific typeSpecific = field.getAnnotation(TypeSpecific.class);
-
-                        if (typeSpecific != null && !Arrays.asList(typeSpecific.value()).contains(blockData.getBlockType()) && keys.contains(name)) {
-                            Quadrum.log(Level.INFO, "%s contains the key %s, but that key can't be applied to the %s block type. It will be ignored.", file.getName(), name, blockData.getBlockType());
-                        }
+                    } else if (jsonElement.isJsonObject()) {
+                        parse(file.getName(), jsonElement.getAsJsonObject());
                     }
-
-                    Map loweredMap = Maps.newHashMap();
-                    for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
-                        loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
-                    }
-                    blockData.textureInfo.clear();
-                    blockData.textureInfo.putAll(loweredMap);
-
-                    loweredMap.clear();
-                    for (Map.Entry<String, Float> entry : blockData.mobDrops.entrySet()) {
-                        loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
-                    }
-                    blockData.mobDrops.clear();
-                    blockData.mobDrops.putAll(loweredMap);
-
-                    blockDataMap.put(blockData.name, blockData);
                 }
             } catch (IOException ex) {
                 Quadrum.log(Level.WARN, "Completely failed to generate block from %s. Reason: %s", file.getName(), ex.toString());
             }
+        }
+    }
+
+    private static void parse(String filename, JsonObject jsonObject) {
+        try {
+            BlockData blockData = Quadrum.gson.fromJson(jsonObject, BlockData.class);
+
+            List<String> keys = Lists.newArrayList();
+            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+                keys.add(entry.getKey());
+            }
+
+            for (Field field : BlockData.class.getDeclaredFields()) {
+                String name = field.getName();
+                if (field.getAnnotation(SerializedName.class) != null) {
+                    name = field.getAnnotation(SerializedName.class).value();
+                }
+
+                TypeSpecific typeSpecific = field.getAnnotation(TypeSpecific.class);
+
+                if (typeSpecific != null && !Arrays.asList(typeSpecific.value()).contains(blockData.getBlockType()) && keys.contains(name)) {
+                    Quadrum.log(Level.INFO, "%s contains the key %s, but that key can't be applied to the %s block type. It will be ignored.", filename, name, blockData.getBlockType());
+                }
+            }
+
+            Map loweredMap = Maps.newHashMap();
+            for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
+                loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
+            }
+            blockData.textureInfo.clear();
+            blockData.textureInfo.putAll(loweredMap);
+
+            loweredMap.clear();
+            for (Map.Entry<String, Float> entry : blockData.mobDrops.entrySet()) {
+                loweredMap.put(entry.getKey().toLowerCase(), entry.getValue());
+            }
+            blockData.mobDrops.clear();
+            blockData.mobDrops.putAll(loweredMap);
+
+            blockDataMap.put(blockData.name, blockData);
+        } catch (JsonSyntaxException ex) {
+            Quadrum.log(Level.WARN, "Ran into an issue while parsing %s. Reason: %s", filename, ex.toString());
         }
     }
 
