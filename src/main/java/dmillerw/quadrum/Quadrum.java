@@ -10,7 +10,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.common.core.CommonProxy;
-import dmillerw.quadrum.common.core.command.CommandQuadrum;
 import dmillerw.quadrum.common.lib.data.Effect;
 import dmillerw.quadrum.common.lib.data.EffectDeserializer;
 import org.apache.logging.log4j.Level;
@@ -104,6 +103,6 @@ public class Quadrum {
 
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartingEvent event) {
-        event.registerServerCommand(new CommandQuadrum());
+//        event.registerServerCommand(new CommandQuadrum());
     }
 }
