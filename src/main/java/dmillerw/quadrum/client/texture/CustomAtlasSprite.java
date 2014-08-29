@@ -18,6 +18,8 @@ import java.io.IOException;
  */
 public class CustomAtlasSprite extends TextureAtlasSprite {
 
+    private int lastMapWidth;
+    private int lastMapHeight;
     private int lastWidth;
     private int lastHeight;
     private int lastX;
@@ -31,16 +33,18 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
     }
 
     @Override
-    public void initSprite(int p_110971_1_, int p_110971_2_, int p_110971_3_, int p_110971_4_, boolean p_110971_5_) {
-        super.initSprite(p_110971_1_, p_110971_2_, p_110971_3_, p_110971_4_, p_110971_5_);
-        lastWidth = p_110971_1_;
-        lastHeight = p_110971_2_;
-        lastX = p_110971_3_;
-        lastY = p_110971_4_;
+    public void initSprite(int mapWidth, int mapHeight, int originX, int originY, boolean rotated) {
+        super.initSprite(mapWidth, mapHeight, originX, originY, rotated);
+        lastMapWidth = mapWidth;
+        lastMapHeight = mapHeight;
+        lastX = originX;
+        lastY = originY;
     }
 
     public void restore() {
-        initSprite(lastWidth, lastHeight, lastX, lastY, false);
+        this.width = lastWidth;
+        this.height = lastHeight;
+        initSprite(lastMapWidth, lastMapHeight, lastX, lastY, false);
     }
 
     @Override
@@ -50,7 +54,6 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
 
     @Override
     public boolean load(IResourceManager manager, ResourceLocation location) {
-        boolean failed = false;
         BufferedImage image = null;
 
         try {
@@ -61,11 +64,12 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
             }
         } catch (IOException ex) {
             Quadrum.log(Level.WARN, "Failed to load texture %s. Reason: %s", (location.getResourcePath() + ".png"), ex.getMessage());
-            failed = true;
             return true;
         }
 
-        if (image != null && !failed) {
+        if (image != null) {
+            lastWidth = image.getWidth();
+            lastHeight = image.getHeight();
             GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
             BufferedImage[] array = new BufferedImage[1 + gameSettings.mipmapLevels];
             array[0] = image;
