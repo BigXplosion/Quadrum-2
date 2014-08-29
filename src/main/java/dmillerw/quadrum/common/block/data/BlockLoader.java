@@ -42,7 +42,7 @@ public class BlockLoader {
                             JsonElement element = iterator.next();
                             if (element != null && element.isJsonObject()) {
                                 if (JsonVerification.verifyRequirements(file, element.getAsJsonObject(), BlockData.class)) {
-                                    parse(file.getName(), (JsonObject) iterator.next());
+                                    parse(file.getName(), element.getAsJsonObject());
                                 }
                             }
                         }
