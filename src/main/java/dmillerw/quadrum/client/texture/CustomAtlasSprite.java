@@ -64,19 +64,21 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
             }
         } catch (IOException ex) {
             Quadrum.log(Level.WARN, "Failed to load texture %s. Reason: %s", (location.getResourcePath() + ".png"), ex.getMessage());
+            if (block) {
+                TextureLoader.INSTANCE.removeBlockIcon(this.getIconName());
+            } else {
+                TextureLoader.INSTANCE.removeItemIcon(this.getIconName());
+            }
             return true;
-        }
-
-        if (image != null) {
-            lastWidth = image.getWidth();
-            lastHeight = image.getHeight();
-            GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
-            BufferedImage[] array = new BufferedImage[1 + gameSettings.mipmapLevels];
-            array[0] = image;
-            this.loadSprite(array, null, (float) gameSettings.anisotropicFiltering > 1.0F);
-            return false;
-        } else {
-            Quadrum.log(Level.WARN, "Failed to load texture %s", (location.getResourcePath() + ".png"));
+        } finally {
+            if (image != null) {
+                lastWidth = image.getWidth();
+                lastHeight = image.getHeight();
+                GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+                BufferedImage[] array = new BufferedImage[1 + gameSettings.mipmapLevels];
+                array[0] = image;
+                this.loadSprite(array, null, (float) gameSettings.anisotropicFiltering > 1.0F);
+            }
         }
 
         return true;

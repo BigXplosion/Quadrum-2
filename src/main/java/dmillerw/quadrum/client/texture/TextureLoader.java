@@ -25,7 +25,17 @@ import java.util.Map;
  */
 public class TextureLoader {
 
-    public static IIcon getBlockIcon(BlockData data, String side) {
+    public static IIcon getBlockIcon(BlockData blockData, String side) {
+        IIcon icon = internalGetBlockIcon(blockData, side);
+        return icon != null ? icon : missing();
+    }
+
+    public static IIcon getItemIcon(ItemData itemData) {
+        IIcon icon = internalGetItemIcon(itemData);
+        return icon != null ? icon : missing();
+    }
+
+    public static IIcon internalGetBlockIcon(BlockData data, String side) {
         if (side.equalsIgnoreCase("default")) {
             return INSTANCE.getBlockIcon(data.defaultTexture);
         }
@@ -37,8 +47,12 @@ public class TextureLoader {
         }
     }
 
-    public static IIcon getItemIcon(ItemData data) {
+    public static IIcon internalGetItemIcon(ItemData data) {
         return INSTANCE.getItemIcon(data.texture);
+    }
+
+    private static IIcon missing() {
+        return ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
     }
 
     public static final TextureLoader INSTANCE = new TextureLoader();
@@ -77,6 +91,16 @@ public class TextureLoader {
         return itemMapping.get(name);
     }
 
+    public void removeBlockIcon(String name) {
+        blockMap.setTextureEntry("quadrum:" + name, null);
+        blockMapping.remove(name);
+    }
+
+    public void removeItemIcon(String name) {
+        itemMap.setTextureEntry("quadrum:" + name, null);
+        itemMapping.remove(name);
+    }
+
     @SubscribeEvent
     public void onTextureStich(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 0) {
@@ -84,7 +108,6 @@ public class TextureLoader {
             blockMapping = Maps.newHashMap();
             for (BlockData block : BlockLoader.blockDataMap.values()) {
                 registerBlockIcon(block.defaultTexture);
-
                 for (String string : block.textureInfo.values()) {
                     registerBlockIcon(string);
                 }
