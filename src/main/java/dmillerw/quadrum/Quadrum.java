@@ -40,6 +40,7 @@ public class Quadrum {
 
     public static Logger logger;
 
+    public static File configDir;
     public static File blockDir;
     public static File itemDir;
 
@@ -62,8 +63,9 @@ public class Quadrum {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
-        blockDir = new File(event.getModConfigurationDirectory(), "Quadrum/block/");
-        itemDir = new File(event.getModConfigurationDirectory(), "Quadrum/item/");
+        configDir = new File(event.getModConfigurationDirectory(), "Quadrum/");
+        blockDir = new File(configDir, "block/");
+        itemDir = new File(configDir, "item/");
 
         if (!blockDir.exists()) {
             blockDir.mkdirs();

@@ -128,12 +128,12 @@ public class TextureLoader {
             for (CustomAtlasSprite customAtlasSprite : blockMapping.values()) {
                 customAtlasSprite.restore();
             }
-            if (Quadrum.dumpBlockMap) dumpTexture(new File(Quadrum.blockDir, "out.png"));
+            if (Quadrum.dumpBlockMap) dumpTexture(new File(Quadrum.configDir, "block_out.png"));
         } else if (event.map.getTextureType() == 1) {
             for (CustomAtlasSprite customAtlasSprite : itemMapping.values()) {
                 customAtlasSprite.restore();
             }
-            if (Quadrum.dumpItemMap) dumpTexture(new File(Quadrum.itemDir, "out.png"));
+            if (Quadrum.dumpItemMap) dumpTexture(new File(Quadrum.configDir, "item_out.png"));
         }
     }
 
