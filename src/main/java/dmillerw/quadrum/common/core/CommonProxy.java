@@ -18,13 +18,15 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
+import java.io.File;
+
 /**
  * @author dmillerw
  */
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
-        Configuration configuration = new Configuration(event.getSuggestedConfigurationFile());
+        Configuration configuration = new Configuration(new File(Quadrum.configDir, "Quadrum.cfg"));
         configuration.load();
 
         Quadrum.textureStackTrace = configuration.get("general", "textureStackTrace", false, "Dump full stack trace upon failing to load a texture").getBoolean(false);
