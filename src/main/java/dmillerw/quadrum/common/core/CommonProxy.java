@@ -15,6 +15,7 @@ import dmillerw.quadrum.common.lib.LanguageHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**
@@ -23,6 +24,15 @@ import net.minecraftforge.oredict.OreDictionary;
 public class CommonProxy {
 
     public void preInit(FMLPreInitializationEvent event) {
+        Configuration configuration = new Configuration(event.getSuggestedConfigurationFile());
+        configuration.load();
+
+        Quadrum.textureStackTrace = configuration.get("general", "textureStackTrace", false, "Dump full stack trace upon failing to load a texture").getBoolean(false);
+        Quadrum.dumpBlockMap = configuration.get("general", "dumpBlockMap", false, "Dump the stitched together block texture map to the block folder").getBoolean(false);
+        Quadrum.dumpItemMap = configuration.get("general", "dumpItemMap", false, "Dump the stitched together item texture map to the item folder").getBoolean(false);
+
+        configuration.save();
+
         BlockLoader.initialize();
         ItemLoader.initialize();
 

@@ -64,6 +64,7 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
             }
         } catch (IOException ex) {
             Quadrum.log(Level.WARN, "Failed to load texture %s. Reason: %s", (location.getResourcePath() + ".png"), ex.getMessage());
+            if (Quadrum.textureStackTrace) ex.printStackTrace();
             if (block) {
                 TextureLoader.INSTANCE.removeBlockIcon(this.getIconName());
             } else {

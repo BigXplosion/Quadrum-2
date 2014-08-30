@@ -2,6 +2,7 @@ package dmillerw.quadrum.client.texture;
 
 import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.block.data.BlockLoader;
 import dmillerw.quadrum.common.item.data.ItemData;
@@ -127,10 +128,12 @@ public class TextureLoader {
             for (CustomAtlasSprite customAtlasSprite : blockMapping.values()) {
                 customAtlasSprite.restore();
             }
+            if (Quadrum.dumpBlockMap) dumpTexture(new File(Quadrum.blockDir, "out.png"));
         } else if (event.map.getTextureType() == 1) {
             for (CustomAtlasSprite customAtlasSprite : itemMapping.values()) {
                 customAtlasSprite.restore();
             }
+            if (Quadrum.dumpItemMap) dumpTexture(new File(Quadrum.itemDir, "out.png"));
         }
     }
 

@@ -51,6 +51,10 @@ public class Quadrum {
     @SideOnly(Side.CLIENT)
     public static File itemTextureDir;
 
+    public static boolean textureStackTrace;
+    public static boolean dumpBlockMap;
+    public static boolean dumpItemMap;
+
     public static void log(Level level, String message, Object ... args) {
         logger.log(level, String.format(message, args));
     }
