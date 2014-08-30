@@ -1,9 +1,6 @@
 package dmillerw.quadrum.common.lib;
 
-import dmillerw.quadrum.common.block.BlockQuadrum;
-import dmillerw.quadrum.common.block.BlockQuadrumFence;
-import dmillerw.quadrum.common.block.BlockQuadrumSlab;
-import dmillerw.quadrum.common.block.BlockQuadrumStair;
+import dmillerw.quadrum.common.block.*;
 import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.item.ItemQuadrum;
 import dmillerw.quadrum.common.item.ItemQuadrumDrink;
@@ -29,6 +26,7 @@ public @interface TypeSpecific {
         BLOCK_STAIR("stair", BlockQuadrumStair.class),
         BLOCK_SLAB("slab", BlockQuadrumSlab.class),
         BLOCK_FENCE("fence", BlockQuadrumFence.class),
+        BLOCK_WALL("wall", BlockQuadrumWall.class),
         ITEM("item", ItemQuadrum.class),
         ITEM_FOOD("food", ItemQuadrumFood.class),
         ITEM_DRINK("drink", ItemQuadrumDrink.class);

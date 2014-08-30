@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import org.apache.logging.log4j.Level;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -128,12 +129,22 @@ public class TextureLoader {
             for (CustomAtlasSprite customAtlasSprite : blockMapping.values()) {
                 customAtlasSprite.restore();
             }
-            if (Quadrum.dumpBlockMap) dumpTexture(new File(Quadrum.configDir, "block_out.png"));
+
+            if (Quadrum.dumpBlockMap) {
+                File file = new File(Quadrum.configDir, "block_out.png");
+                dumpTexture(file);
+                Quadrum.log(Level.INFO, "Dumping block texture map to " + file.getAbsolutePath());
+            }
         } else if (event.map.getTextureType() == 1) {
             for (CustomAtlasSprite customAtlasSprite : itemMapping.values()) {
                 customAtlasSprite.restore();
             }
-            if (Quadrum.dumpItemMap) dumpTexture(new File(Quadrum.configDir, "item_out.png"));
+
+            if (Quadrum.dumpItemMap) {
+                File file = new File(Quadrum.configDir, "item_out.png");
+                dumpTexture(file);
+                Quadrum.log(Level.INFO, "Dumping item texture map to " + file.getAbsolutePath());
+            }
         }
     }
 

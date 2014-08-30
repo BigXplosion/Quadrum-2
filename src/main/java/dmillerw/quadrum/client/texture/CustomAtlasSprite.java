@@ -63,7 +63,7 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
                 image = ImageIO.read(new File(Quadrum.itemTextureDir, location.getResourcePath() + ".png"));
             }
         } catch (IOException ex) {
-            Quadrum.log(Level.WARN, "Failed to load texture %s. Reason: %s", (location.getResourcePath() + ".png"), ex.getMessage());
+            Quadrum.log(Level.WARN, "Failed to load " + (block ? "block" : "item") + " texture %s. Reason: %s", (location.getResourcePath() + ".png"), ex.getMessage());
             if (Quadrum.textureStackTrace) ex.printStackTrace();
             if (block) {
                 TextureLoader.INSTANCE.removeBlockIcon(this.getIconName());
@@ -71,15 +71,16 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
                 TextureLoader.INSTANCE.removeItemIcon(this.getIconName());
             }
             return true;
-        } finally {
-            if (image != null) {
-                lastWidth = image.getWidth();
-                lastHeight = image.getHeight();
-                GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
-                BufferedImage[] array = new BufferedImage[1 + gameSettings.mipmapLevels];
-                array[0] = image;
-                this.loadSprite(array, null, (float) gameSettings.anisotropicFiltering > 1.0F);
-            }
+        }
+
+        if (image != null) {
+            lastWidth = image.getWidth();
+            lastHeight = image.getHeight();
+            GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+            BufferedImage[] array = new BufferedImage[1 + gameSettings.mipmapLevels];
+            array[0] = image;
+            this.loadSprite(array, null, (float) gameSettings.anisotropicFiltering > 1.0F);
+            return false;
         }
 
         return true;
