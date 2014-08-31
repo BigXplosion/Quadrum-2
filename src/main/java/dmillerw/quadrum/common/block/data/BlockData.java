@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.common.lib.Required;
 import dmillerw.quadrum.common.lib.TypeSpecific;
 import dmillerw.quadrum.common.lib.data.Drop;
+import dmillerw.quadrum.common.lib.data.MeltingData;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -41,6 +42,12 @@ public class BlockData {
 
     public Drop[] drops = new Drop[0];
 
+    @TypeSpecific({TypeSpecific.Type.BLOCK, TypeSpecific.Type.BLOCK_SLAB})
+    @SerializedName("melting-data")
+    public MeltingData meltingData;
+
+    @TypeSpecific({TypeSpecific.Type.BLOCK, TypeSpecific.Type.BLOCK_SLAB})
+    public float slickness = 0F;
     public float hardness = 2F;
     public float resistance = 2F;
 

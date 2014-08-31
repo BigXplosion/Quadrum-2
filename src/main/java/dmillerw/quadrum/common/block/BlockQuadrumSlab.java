@@ -14,9 +14,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * @author dmillerw
@@ -30,12 +32,15 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumBlock {
 
         this.name = data.name;
 
+        setTickRandomly(true);
         setStepSound(data.getBlockSound());
         setHardness(data.hardness);
         setResistance(data.resistance);
         setBlockName(data.name);
         setCreativeTab(TabQuadrum.BLOCK);
         setLightOpacity(0);
+
+        this.slipperiness = data.slickness;
 
         if (data.requiresTool) {
             setHarvestLevel(data.getHarvestTool(), data.miningLevel);
@@ -87,6 +92,13 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumBlock {
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return BlockLoader.blockDataMap.get(name).collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
+    }
+
+    public void updateTick(World world, int x, int y, int z, Random random) {
+        BlockData data = BlockLoader.blockDataMap.get(name);
+        if (data.meltingData != null && data.meltingData.getFluid() != null && world.getSavedLightValue(EnumSkyBlock.Block, x, y, z) > data.meltingData.light - this.getLightOpacity()) {
+            world.setBlock(x, y, z, data.meltingData.getFluid().getBlock());
+        }
     }
 
     @Override
