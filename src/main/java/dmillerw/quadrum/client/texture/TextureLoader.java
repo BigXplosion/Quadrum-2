@@ -108,7 +108,7 @@ public class TextureLoader {
         if (event.map.getTextureType() == 0) {
             blockMap = event.map;
             blockMapping = Maps.newHashMap();
-            for (BlockData block : BlockLoader.blockDataMap.values()) {
+            for (BlockData block : BlockLoader.blockDataList) {
                 registerBlockIcon(block.defaultTexture);
                 for (String string : block.textureInfo.values()) {
                     registerBlockIcon(string);
@@ -117,7 +117,7 @@ public class TextureLoader {
         } else if (event.map.getTextureType() == 1) {
             itemMap = event.map;
             itemMapping = Maps.newHashMap();
-            for (ItemData item : ItemLoader.itemDataMap.values()) {
+            for (ItemData item : ItemLoader.itemDataList) {
                 registerItemIcon(item.texture);
             }
         }

@@ -22,7 +22,7 @@ public class EntityDropHandler {
 
         if (EntityList.classToStringMapping.containsKey(event.entityLiving.getClass())) {
             String entityType = ((String) EntityList.classToStringMapping.get(event.entityLiving.getClass())).toLowerCase();
-            for (BlockData blockData : BlockLoader.blockDataMap.values()) {
+            for (BlockData blockData : BlockLoader.blockDataList) {
                 if (blockData.mobDrops.containsKey(entityType)) {
                     float probability = blockData.mobDrops.get(entityType);
                     if (random.nextFloat() <= probability) {
@@ -30,7 +30,7 @@ public class EntityDropHandler {
                     }
                 }
             }
-            for (ItemData itemData : ItemLoader.itemDataMap.values()) {
+            for (ItemData itemData : ItemLoader.itemDataList) {
                 if (itemData.mobDrops.containsKey(entityType)) {
                     float probability = itemData.mobDrops.get(entityType);
                     if (random.nextFloat() <= probability) {

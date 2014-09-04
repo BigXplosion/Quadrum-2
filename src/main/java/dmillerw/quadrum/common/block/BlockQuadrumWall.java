@@ -4,9 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.client.texture.TextureLoader;
 import dmillerw.quadrum.common.block.data.BlockData;
-import dmillerw.quadrum.common.block.data.BlockLoader;
 import dmillerw.quadrum.common.lib.BlockStaticMethodHandler;
-import dmillerw.quadrum.common.lib.IQuadrumBlock;
+import dmillerw.quadrum.common.lib.IQuadrumObject;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.BlockWall;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,31 +20,31 @@ import java.util.ArrayList;
 /**
  * @author dmillerw
  */
-public class BlockQuadrumWall extends BlockWall implements IQuadrumBlock {
+public class BlockQuadrumWall extends BlockWall implements IQuadrumObject {
 
-    private String name;
+    private final BlockData blockData;
 
-    public BlockQuadrumWall(BlockData data) {
-        super(data.getSimilarBlock());
+    public BlockQuadrumWall(BlockData blockData) {
+        super(blockData.getSimilarBlock());
 
-        this.name = data.name;
-
-        setStepSound(data.getBlockSound());
-        setHardness(data.hardness);
-        setResistance(data.resistance);
-        setBlockName(data.name);
+        this.blockData = blockData;
+        
+        setStepSound(blockData.getBlockSound());
+        setHardness(blockData.hardness);
+        setResistance(blockData.resistance);
+        setBlockName(blockData.name);
         setCreativeTab(TabQuadrum.BLOCK);
         setLightOpacity(0);
 
-        if (data.requiresTool) {
-            setHarvestLevel(data.getHarvestTool(), data.miningLevel);
+        if (blockData.requiresTool) {
+            setHarvestLevel(blockData.getHarvestTool(), blockData.miningLevel);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
-        return BlockLoader.blockDataMap.get(name).transparent ? 1 : 0;
+        return blockData.transparent ? 1 : 0;
     }
 
     @Override
@@ -65,7 +64,7 @@ public class BlockQuadrumWall extends BlockWall implements IQuadrumBlock {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return TextureLoader.getBlockIcon(BlockLoader.blockDataMap.get(name), "default");
+        return TextureLoader.getBlockIcon(blockData, "default");
     }
 
     @SideOnly(Side.CLIENT)
@@ -76,16 +75,16 @@ public class BlockQuadrumWall extends BlockWall implements IQuadrumBlock {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return BlockStaticMethodHandler.getDrops(this, BlockLoader.blockDataMap.get(name), world, x, y, z, metadata, fortune);
+        return BlockStaticMethodHandler.getDrops(this, blockData, world, x, y, z, metadata, fortune);
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return BlockLoader.blockDataMap.get(name).collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
+        return blockData.collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
     }
 
     @Override
-    public String getName() {
-        return name;
+    public BlockData get() {
+        return blockData;
     }
 }

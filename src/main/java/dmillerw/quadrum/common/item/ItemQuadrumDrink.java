@@ -1,7 +1,6 @@
 package dmillerw.quadrum.common.item;
 
 import dmillerw.quadrum.common.item.data.ItemData;
-import dmillerw.quadrum.common.item.data.ItemLoader;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -13,8 +12,8 @@ import net.minecraft.world.World;
  */
 public class ItemQuadrumDrink extends ItemQuadrum {
 
-    public ItemQuadrumDrink(ItemData data) {
-        super(data);
+    public ItemQuadrumDrink(ItemData itemData) {
+        super(itemData);
     }
 
     @Override
@@ -23,10 +22,8 @@ public class ItemQuadrumDrink extends ItemQuadrum {
             --stack.stackSize;
         }
 
-        ItemData data = ItemLoader.itemDataMap.get(name);
-
         if (!world.isRemote) {
-            player.addPotionEffect(new PotionEffect(data.consumeEffect.id, data.consumeEffect.duration * 20, data.consumeEffect.amplifier));
+            player.addPotionEffect(new PotionEffect(itemData.consumeEffect.id, itemData.consumeEffect.duration * 20, itemData.consumeEffect.amplifier));
         }
 
         return stack.stackSize <= 0 ? null : stack;
@@ -34,7 +31,7 @@ public class ItemQuadrumDrink extends ItemQuadrum {
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
-        return ItemLoader.itemDataMap.get(name).consumeDuration;
+        return itemData.consumeDuration;
     }
 
     @Override

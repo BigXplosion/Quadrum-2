@@ -106,9 +106,4 @@ public class Quadrum {
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
     }
-
-    @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
-//        event.registerServerCommand(new CommandQuadrum());
-    }
 }

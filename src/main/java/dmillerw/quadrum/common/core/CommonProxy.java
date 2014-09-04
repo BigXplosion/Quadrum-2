@@ -41,11 +41,10 @@ public class CommonProxy {
         LanguageHelper.loadDirectory(Quadrum.blockLangDir);
         LanguageHelper.loadDirectory(Quadrum.itemLangDir);
 
-        for (BlockData blockData : BlockLoader.blockDataMap.values()) {
+        for (BlockData blockData : BlockLoader.blockDataList) {
             if (blockData != null) {
                 Block block = blockData.getBlockType().createBlock(blockData);
                 GameRegistry.registerBlock(block, ItemBlockQuadrum.class, blockData.name);
-                BlockLoader.blockMap.put(blockData.name, block);
 
                 for (String string : blockData.oreDictionary) {
                     OreDictionary.registerOre(string, block);
@@ -53,11 +52,10 @@ public class CommonProxy {
             }
         }
 
-        for (ItemData itemData : ItemLoader.itemDataMap.values()) {
+        for (ItemData itemData : ItemLoader.itemDataList) {
             if (itemData != null) {
                 Item item = itemData.getItemType().createItem(itemData);
                 GameRegistry.registerItem(item, itemData.name);
-                ItemLoader.itemMap.put(itemData.name, item);
 
                 for (String string : itemData.oreDictionary) {
                     OreDictionary.registerOre(string, item);

@@ -3,7 +3,7 @@ package dmillerw.quadrum.common.lib;
 /**
  * @author dmillerw
  */
-public interface IQuadrumItem {
+public interface IQuadrumObject {
 
-    public String getName();
+    public Object get();
 }

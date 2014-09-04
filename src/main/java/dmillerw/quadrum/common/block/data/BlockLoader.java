@@ -28,8 +28,9 @@ import java.util.Map;
  */
 public class BlockLoader {
 
+    public static List<BlockData> blockDataList = Lists.newArrayList();
+
     public static Map<String, Block> blockMap = Maps.newHashMap();
-    public static Map<String, BlockData> blockDataMap = Maps.newHashMap();
 
     public static void initialize() {
         for (File file : Quadrum.blockDir.listFiles(new ExtensionFilter("json"))) {
@@ -92,14 +93,14 @@ public class BlockLoader {
             blockData.mobDrops.clear();
             blockData.mobDrops.putAll(loweredMap);
 
-            blockDataMap.put(blockData.name, blockData);
+            blockDataList.add(blockData);
         } catch (JsonSyntaxException ex) {
             Quadrum.log(Level.WARN, "Ran into an issue while parsing %s. Reason: %s", filename, ex.toString());
         }
     }
 
     public static void verifyDrops() {
-        for (BlockData blockData : blockDataMap.values()) {
+        for (BlockData blockData : blockDataList) {
             List<Drop> dropList = Lists.newArrayList();
             for (Drop drop : blockData.drops) {
                 if (drop.item.isEmpty()) {

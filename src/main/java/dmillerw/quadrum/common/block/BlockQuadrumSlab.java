@@ -4,9 +4,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dmillerw.quadrum.client.texture.TextureLoader;
 import dmillerw.quadrum.common.block.data.BlockData;
-import dmillerw.quadrum.common.block.data.BlockLoader;
 import dmillerw.quadrum.common.lib.BlockStaticMethodHandler;
-import dmillerw.quadrum.common.lib.IQuadrumBlock;
+import dmillerw.quadrum.common.lib.IQuadrumObject;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,34 +22,34 @@ import java.util.Random;
 /**
  * @author dmillerw
  */
-public class BlockQuadrumSlab extends BlockSlab implements IQuadrumBlock {
+public class BlockQuadrumSlab extends BlockSlab implements IQuadrumObject {
 
-    public final String name;
+    private final BlockData blockData;
+    
+    public BlockQuadrumSlab(BlockData blockData) {
+        super(false, blockData.getBlockMaterial());
 
-    public BlockQuadrumSlab(BlockData data) {
-        super(false, data.getBlockMaterial());
-
-        this.name = data.name;
-
+        this.blockData = blockData;
+        
         setTickRandomly(true);
-        setStepSound(data.getBlockSound());
-        setHardness(data.hardness);
-        setResistance(data.resistance);
-        setBlockName(data.name);
+        setStepSound(blockData.getBlockSound());
+        setHardness(blockData.hardness);
+        setResistance(blockData.resistance);
+        setBlockName(blockData.name);
         setCreativeTab(TabQuadrum.BLOCK);
         setLightOpacity(0);
 
-        this.slipperiness = data.slickness;
+        this.slipperiness = blockData.slickness;
 
-        if (data.requiresTool) {
-            setHarvestLevel(data.getHarvestTool(), data.miningLevel);
+        if (blockData.requiresTool) {
+            setHarvestLevel(blockData.getHarvestTool(), blockData.miningLevel);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderBlockPass() {
-        return BlockLoader.blockDataMap.get(name).transparent ? 1 : 0;
+        return blockData.transparent ? 1 : 0;
     }
 
     @Override
@@ -70,7 +69,7 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumBlock {
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return TextureLoader.getBlockIcon(BlockLoader.blockDataMap.get(name), "default");
+        return TextureLoader.getBlockIcon(blockData, "default");
     }
 
     @Override
@@ -86,23 +85,23 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumBlock {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return BlockStaticMethodHandler.getDrops(this, BlockLoader.blockDataMap.get(name), world, x, y, z, metadata, fortune);
+        return BlockStaticMethodHandler.getDrops(this, blockData, world, x, y, z, metadata, fortune);
     }
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        return BlockLoader.blockDataMap.get(name).collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
+        return blockData.collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
     }
 
     public void updateTick(World world, int x, int y, int z, Random random) {
-        BlockData data = BlockLoader.blockDataMap.get(name);
+        BlockData data = blockData;
         if (data.meltingData != null && data.meltingData.getFluid() != null && world.getSavedLightValue(EnumSkyBlock.Block, x, y, z) > data.meltingData.light - this.getLightOpacity()) {
             world.setBlock(x, y, z, data.meltingData.getFluid().getBlock());
         }
     }
 
     @Override
-    public String getName() {
-        return name;
+    public BlockData get() {
+        return blockData;
     }
 }

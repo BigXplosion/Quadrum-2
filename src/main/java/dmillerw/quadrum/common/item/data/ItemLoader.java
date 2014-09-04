@@ -28,8 +28,9 @@ import java.util.Map;
  */
 public class ItemLoader {
 
+    public static List<ItemData> itemDataList = Lists.newArrayList();
+
     public static Map<String, Item> itemMap = Maps.newHashMap();
-    public static Map<String, ItemData> itemDataMap = Maps.newHashMap();
 
     public static void initialize() {
         for (File file : Quadrum.itemDir.listFiles(new ExtensionFilter("json"))) {
@@ -85,7 +86,7 @@ public class ItemLoader {
             itemData.mobDrops.clear();
             itemData.mobDrops.putAll(loweredMap);
 
-            itemDataMap.put(itemData.name, itemData);
+            itemDataList.add(itemData);
         } catch (JsonSyntaxException ex) {
             Quadrum.log(Level.WARN, "Ran into an issue while parsing %s. Reason: %s", filename, ex.toString());
         }
