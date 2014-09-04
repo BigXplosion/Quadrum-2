@@ -15,7 +15,7 @@ public class Drop {
 
     private Item dropItem;
 
-    public String item;
+    public String item = "";
     public int damage = 0;
     public String amount = "1";
 
