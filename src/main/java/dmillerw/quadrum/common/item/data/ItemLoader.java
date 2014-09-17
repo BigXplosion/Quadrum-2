@@ -43,7 +43,7 @@ public class ItemLoader {
                             JsonElement element = iterator.next();
                             if (element != null && element.isJsonObject()) {
                                 if (JsonVerification.verifyRequirements(file, element.getAsJsonObject(), ItemData.class)) {
-                                    parse(file.getName(), (JsonObject) iterator.next());
+                                    parse(file.getName(), element.getAsJsonObject());
                                 }
                             }
                         }
