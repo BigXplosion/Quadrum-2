@@ -1,8 +1,10 @@
 package dmillerw.quadrum.common.core;
 
+import com.google.common.collect.Maps;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.block.ItemBlockQuadrum;
 import dmillerw.quadrum.common.block.data.BlockData;
@@ -19,6 +21,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.File;
+import java.util.HashMap;
 
 /**
  * @author dmillerw
@@ -40,6 +43,12 @@ public class CommonProxy {
 
         LanguageHelper.loadDirectory(Quadrum.blockLangDir);
         LanguageHelper.loadDirectory(Quadrum.itemLangDir);
+
+        // I'm a horrible lazy person
+        HashMap<String, String> forced = Maps.newHashMap();
+        forced.put("itemGroup.quadrum.block", "Quadrum Blocks");
+        forced.put("itemGroup.quadrum.item", "Quadrum Items");
+        LanguageRegistry.instance().injectLanguage("en_US", forced);
 
         for (BlockData blockData : BlockLoader.blockDataList) {
             if (blockData != null) {
