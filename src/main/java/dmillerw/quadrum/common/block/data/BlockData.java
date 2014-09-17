@@ -120,7 +120,7 @@ public class BlockData {
             } else if (material1 == Material.wood) {
                 blockSound = Block.soundTypeWood;
             } else if (material1 == Material.ground) {
-                blockSound = Block.soundTypeGrass;
+                blockSound = Block.soundTypeGravel;
             } else if (material1 == Material.iron) {
                 blockSound = Block.soundTypeMetal;
             }
