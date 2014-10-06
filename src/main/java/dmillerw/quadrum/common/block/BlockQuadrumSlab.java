@@ -25,7 +25,7 @@ import java.util.Random;
 public class BlockQuadrumSlab extends BlockSlab implements IQuadrumObject {
 
     private final BlockData blockData;
-    
+
     public BlockQuadrumSlab(BlockData blockData) {
         super(false, blockData.getBlockMaterial());
 
@@ -63,13 +63,13 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumObject {
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-
+    public void registerBlockIcons(IIconRegister register) {
+        TextureLoader.registerIcons(register, this);
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return TextureLoader.getBlockIcon(blockData, "default");
+        return TextureLoader.getIcon(this, "default");
     }
 
     @Override

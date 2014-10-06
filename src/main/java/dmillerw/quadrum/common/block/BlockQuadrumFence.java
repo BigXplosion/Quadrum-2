@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class BlockQuadrumFence extends BlockFence implements IQuadrumObject {
 
     private final BlockData blockData;
-    
+
     private BlockQuadrumFence(BlockData blockData) {
         super("", blockData.getBlockMaterial());
 
@@ -57,12 +57,12 @@ public class BlockQuadrumFence extends BlockFence implements IQuadrumObject {
 
     @Override
     public void registerBlockIcons(IIconRegister register) {
-
+        TextureLoader.registerIcons(register, this);
     }
 
     @Override
     public IIcon getIcon(int side, int meta) {
-        return TextureLoader.getBlockIcon(blockData, "default");
+        return TextureLoader.getIcon(this, "default");
     }
 
     @Override

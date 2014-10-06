@@ -2,6 +2,7 @@ package dmillerw.quadrum.common.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import dmillerw.quadrum.client.texture.QuadrumSprite;
 import dmillerw.quadrum.client.texture.TextureLoader;
 import dmillerw.quadrum.common.block.data.BlockData;
 import dmillerw.quadrum.common.lib.BlockStaticMethodHandler;
@@ -27,6 +28,8 @@ import java.util.Random;
 public class BlockQuadrum extends Block implements IQuadrumObject {
 
     public final BlockData blockData;
+
+    public QuadrumSprite icon;
 
     public BlockQuadrum(BlockData blockData) {
         super(blockData.getBlockMaterial());
@@ -57,8 +60,8 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        TextureLoader.registerIcons(iconRegister, this);
     }
 
     @Override
@@ -68,19 +71,19 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
         if (meta == 0) front = ForgeDirection.SOUTH;
 
         if (forgeSide == front) {
-            return TextureLoader.getBlockIcon(blockData, "front");
+            return TextureLoader.getIcon(this, "front");
         } else if (forgeSide == front.getRotation(ForgeDirection.UP)) {
-            return TextureLoader.getBlockIcon(blockData, "left");
+            return TextureLoader.getIcon(this, "left");
         } else if (forgeSide == front.getRotation(ForgeDirection.UP).getOpposite()) {
-            return TextureLoader.getBlockIcon(blockData, "right");
+            return TextureLoader.getIcon(this, "right");
         } else if (forgeSide == front.getOpposite()) {
-            return TextureLoader.getBlockIcon(blockData, "back");
+            return TextureLoader.getIcon(this, "back");
         } else if (side == 0) {
-            return TextureLoader.getBlockIcon(blockData, "bottom");
+            return TextureLoader.getIcon(this, "bottom");
         } else if (side == 1) {
-            return TextureLoader.getBlockIcon(blockData, "top");
+            return TextureLoader.getIcon(this, "top");
         } else {
-            return TextureLoader.getBlockIcon(blockData, "default");
+            return TextureLoader.getIcon(this, "default");
         }
     }
 

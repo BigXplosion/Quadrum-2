@@ -74,6 +74,11 @@ public class BlockData {
     public boolean requiresTool = true;
     @SerializedName("drops-self")
     public boolean dropsSelf = true;
+    @TypeSpecific(TypeSpecific.Type.BLOCK)
+    @SerializedName("connected-texture")
+    public boolean connectedTexture;
+    @TypeSpecific(TypeSpecific.Type.BLOCK)
+    public boolean multipart;
 
     /* START GETTERS */
     public TypeSpecific.Type getBlockType() {

@@ -3,6 +3,7 @@ package dmillerw.quadrum.client.texture;
 import dmillerw.quadrum.Quadrum;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
@@ -16,35 +17,25 @@ import java.io.IOException;
 /**
  * @author dmillerw
  */
-public class CustomAtlasSprite extends TextureAtlasSprite {
+public class QuadrumSprite extends TextureAtlasSprite {
 
-    private int lastMapWidth;
-    private int lastMapHeight;
-    private int lastWidth;
-    private int lastHeight;
-    private int lastX;
-    private int lastY;
+    public static QuadrumSprite safelyConstruct(String name, boolean block) {
+        // Verify if the texture actually exists
+        boolean exists;
+        if (block) {
+            exists = new File(Quadrum.blockTextureDir, name + ".png").exists();
+        } else {
+            exists = new File(Quadrum.itemTextureDir, name + ".png").exists();
+        }
+        return exists ? new QuadrumSprite(name, block) : null;
+    }
 
-    private boolean block;
+    public boolean block;
+    public boolean failed;
 
-    protected CustomAtlasSprite(String name, boolean block) {
+    public QuadrumSprite(String name, boolean block) {
         super(name);
         this.block = block;
-    }
-
-    @Override
-    public void initSprite(int mapWidth, int mapHeight, int originX, int originY, boolean rotated) {
-        super.initSprite(mapWidth, mapHeight, originX, originY, rotated);
-        lastMapWidth = mapWidth;
-        lastMapHeight = mapHeight;
-        lastX = originX;
-        lastY = originY;
-    }
-
-    public void restore() {
-        this.width = lastWidth;
-        this.height = lastHeight;
-        initSprite(lastMapWidth, lastMapHeight, lastX, lastY, false);
     }
 
     @Override
@@ -54,8 +45,7 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
 
     @Override
     public boolean load(IResourceManager manager, ResourceLocation location) {
-        BufferedImage image = null;
-
+        BufferedImage image;
         try {
             if (block) {
                 image = ImageIO.read(new File(Quadrum.blockTextureDir, location.getResourcePath() + ".png"));
@@ -65,17 +55,11 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
         } catch (IOException ex) {
             Quadrum.log(Level.WARN, "Failed to load " + (block ? "block" : "item") + " texture %s. Reason: %s", (location.getResourcePath() + ".png"), ex.getMessage());
             if (Quadrum.textureStackTrace) ex.printStackTrace();
-            if (block) {
-                TextureLoader.INSTANCE.removeBlockIcon(this.getIconName());
-            } else {
-                TextureLoader.INSTANCE.removeItemIcon(this.getIconName());
-            }
+            failed = true;
             return true;
         }
 
         if (image != null) {
-            lastWidth = image.getWidth();
-            lastHeight = image.getHeight();
             GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
             BufferedImage[] array = new BufferedImage[1 + gameSettings.mipmapLevels];
             array[0] = image;
@@ -84,5 +68,14 @@ public class CustomAtlasSprite extends TextureAtlasSprite {
         }
 
         return true;
+    }
+
+    public boolean isEmpty() {
+        return height == 0 || width == 0;
+    }
+
+    public QuadrumSprite register(TextureMap textureMap) {
+        textureMap.setTextureEntry(getIconName(), this);
+        return this;
     }
 }

@@ -1,10 +1,11 @@
 package dmillerw.quadrum.common.item;
 
-import dmillerw.quadrum.client.texture.TextureLoader;
+import dmillerw.quadrum.client.texture.QuadrumSprite;
 import dmillerw.quadrum.common.item.data.ItemData;
 import dmillerw.quadrum.common.lib.IQuadrumObject;
 import dmillerw.quadrum.common.lib.TabQuadrum;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,8 @@ import java.util.List;
 public class ItemQuadrumFood extends ItemFood implements IQuadrumObject {
 
     private final ItemData itemData;
+
+    public IIcon icon;
 
     public ItemQuadrumFood(ItemData itemData) {
         super(itemData.foodAmount, itemData.foodSaturation, itemData.wolfFood);
@@ -55,13 +58,14 @@ public class ItemQuadrumFood extends ItemFood implements IQuadrumObject {
     }
 
     @Override
-    public IIcon getIconFromDamage(int damage) {
-        return TextureLoader.getItemIcon(itemData);
+    public void registerIcons(IIconRegister register) {
+        QuadrumSprite quadrumSprite = new QuadrumSprite(itemData.texture, false).register((TextureMap) register);
+        icon = quadrumSprite;
     }
 
     @Override
-    public void registerIcons(IIconRegister register) {
-
+    public IIcon getIconFromDamage(int damage) {
+        return icon;
     }
 
     @Override

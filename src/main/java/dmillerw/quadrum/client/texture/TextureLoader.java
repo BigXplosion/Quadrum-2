@@ -4,12 +4,10 @@ import com.google.common.collect.Maps;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import dmillerw.quadrum.Quadrum;
 import dmillerw.quadrum.common.block.data.BlockData;
-import dmillerw.quadrum.common.block.data.BlockLoader;
 import dmillerw.quadrum.common.item.data.ItemData;
-import dmillerw.quadrum.common.item.data.ItemLoader;
-import net.minecraft.client.Minecraft;
+import dmillerw.quadrum.common.lib.IQuadrumObject;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.BufferUtils;
@@ -27,124 +25,78 @@ import java.util.Map;
  */
 public class TextureLoader {
 
-    public static IIcon getBlockIcon(BlockData blockData, String side) {
-        IIcon icon = internalGetBlockIcon(blockData, side);
-        return icon != null ? icon : missing();
-    }
-
-    public static IIcon getItemIcon(ItemData itemData) {
-        IIcon icon = internalGetItemIcon(itemData);
-        return icon != null ? icon : missing();
-    }
-
-    public static IIcon internalGetBlockIcon(BlockData data, String side) {
-        if (side.equalsIgnoreCase("default")) {
-            return INSTANCE.getBlockIcon(data.defaultTexture);
-        }
-
-        if (data.textureInfo.containsKey(side)) {
-            return INSTANCE.getBlockIcon(data.textureInfo.get(side));
-        } else {
-            return INSTANCE.getBlockIcon(data.defaultTexture);
-        }
-    }
-
-    public static IIcon internalGetItemIcon(ItemData data) {
-        return INSTANCE.getItemIcon(data.texture);
-    }
-
-    private static IIcon missing() {
-        return ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
-    }
-
     public static final TextureLoader INSTANCE = new TextureLoader();
 
-    private TextureMap blockMap;
-    private TextureMap itemMap;
+    private static final String[] BLOCK_TEXTURE_TYPES = new String[] {"front", "back", "left", "right", "top", "bottom", "default"};
 
-    private Map<String, CustomAtlasSprite> blockMapping;
-    private Map<String, CustomAtlasSprite> itemMapping;
+    private static Map<String, Map<String, QuadrumSprite>> iconMap = Maps.newHashMap();
 
-    private void registerBlockIcon(String string) {
-        if (blockMap.getTextureExtry("quadrum:" + string) != null || blockMapping.containsKey(string)) {
-            return;
-        }
+    public static void registerIcons(IIconRegister iconRegister, IQuadrumObject quadrumObject) {
+        if (quadrumObject.get() instanceof BlockData) {
+            BlockData blockData = (BlockData) quadrumObject.get();
+            Map<String, QuadrumSprite> subIconMap = Maps.newHashMap();
 
-        CustomAtlasSprite icon = new CustomAtlasSprite(string, true);
-        blockMap.setTextureEntry("quadrum:" + string, icon);
-        blockMapping.put(string, icon);
-    }
-
-    private void registerItemIcon(String string) {
-        if (itemMap.getTextureExtry("quadrum:" + string) != null || itemMapping.containsKey(string)) {
-            return;
-        }
-
-        CustomAtlasSprite icon = new CustomAtlasSprite(string, false);
-        itemMap.setTextureEntry("quadrum:" + string, icon);
-        itemMapping.put(string, icon);
-    }
-
-    public IIcon getBlockIcon(String name) {
-        return blockMapping.get(name);
-    }
-
-    public IIcon getItemIcon(String name) {
-        return itemMapping.get(name);
-    }
-
-    public void removeBlockIcon(String name) {
-        blockMap.setTextureEntry("quadrum:" + name, null);
-        blockMapping.remove(name);
-    }
-
-    public void removeItemIcon(String name) {
-        itemMap.setTextureEntry("quadrum:" + name, null);
-        itemMapping.remove(name);
-    }
-
-    @SubscribeEvent
-    public void onTextureStich(TextureStitchEvent.Pre event) {
-        if (event.map.getTextureType() == 0) {
-            blockMap = event.map;
-            blockMapping = Maps.newHashMap();
-            for (BlockData block : BlockLoader.blockDataList) {
-                registerBlockIcon(block.defaultTexture);
-                for (String string : block.textureInfo.values()) {
-                    registerBlockIcon(string);
+            if (blockData.textureInfo.isEmpty()) {
+                QuadrumSprite quadrumSprite = QuadrumSprite.safelyConstruct(blockData.defaultTexture, true);
+                if (quadrumSprite != null) quadrumSprite.register((TextureMap) iconRegister);
+                subIconMap.put("default", quadrumSprite);
+            } else {
+                for (String type : BLOCK_TEXTURE_TYPES) {
+                    String icon = (type.equals("default") ? blockData.defaultTexture : blockData.textureInfo.get(type));
+                    if (icon != null && !(icon.trim().isEmpty())) {
+                        QuadrumSprite quadrumSprite = QuadrumSprite.safelyConstruct(icon, true);
+                        if (quadrumSprite != null) quadrumSprite.register((TextureMap) iconRegister);
+                        subIconMap.put(type, quadrumSprite);
+                    }
                 }
             }
-        } else if (event.map.getTextureType() == 1) {
-            itemMap = event.map;
-            itemMapping = Maps.newHashMap();
-            for (ItemData item : ItemLoader.itemDataList) {
-                registerItemIcon(item.texture);
-            }
+
+            iconMap.put(blockData.name, subIconMap);
+        } else if (quadrumObject.get() instanceof ItemData) {
+            ItemData itemData = (ItemData) quadrumObject.get();
+            Map<String, QuadrumSprite> subIconMap = Maps.newHashMap();
+
+            QuadrumSprite quadrumSprite = QuadrumSprite.safelyConstruct(itemData.texture, false);
+            if (quadrumSprite != null) quadrumSprite.register((TextureMap) iconRegister);
+            subIconMap.put("default", quadrumSprite);
+
+            iconMap.put(itemData.name, subIconMap);
         }
+    }
+
+    public static QuadrumSprite getIcon(IQuadrumObject quadrumObject, String identifier) {
+        Map<String, QuadrumSprite> subMap = Maps.newHashMap();
+        if (quadrumObject.get() instanceof BlockData) {
+            subMap = iconMap.get(((BlockData) quadrumObject.get()).name);
+        } else if (quadrumObject.get() instanceof ItemData) {
+            subMap = iconMap.get(((ItemData) quadrumObject.get()).name);
+        }
+
+        if (!(subMap.containsKey(identifier))) {
+            identifier = "default";
+        }
+
+        QuadrumSprite quadrumSprite = subMap.get(identifier);
+
+        if (quadrumSprite == null || quadrumSprite.isEmpty()) {
+            return null;
+        }
+
+        return quadrumSprite;
     }
 
     @SubscribeEvent
     public void onTextureStitched(TextureStitchEvent.Post event) {
-        if (event.map.getTextureType() == 0) {
-            for (CustomAtlasSprite customAtlasSprite : blockMapping.values()) {
-                customAtlasSprite.restore();
-            }
+        if (Quadrum.dumpBlockMap) {
+            File file = new File(Quadrum.configDir, "block_out.png");
+            dumpTexture(file);
+            Quadrum.log(Level.INFO, "Dumping block texture map to " + file.getAbsolutePath());
+        }
 
-            if (Quadrum.dumpBlockMap) {
-                File file = new File(Quadrum.configDir, "block_out.png");
-                dumpTexture(file);
-                Quadrum.log(Level.INFO, "Dumping block texture map to " + file.getAbsolutePath());
-            }
-        } else if (event.map.getTextureType() == 1) {
-            for (CustomAtlasSprite customAtlasSprite : itemMapping.values()) {
-                customAtlasSprite.restore();
-            }
-
-            if (Quadrum.dumpItemMap) {
-                File file = new File(Quadrum.configDir, "item_out.png");
-                dumpTexture(file);
-                Quadrum.log(Level.INFO, "Dumping item texture map to " + file.getAbsolutePath());
-            }
+        if (Quadrum.dumpItemMap) {
+            File file = new File(Quadrum.configDir, "item_out.png");
+            dumpTexture(file);
+            Quadrum.log(Level.INFO, "Dumping item texture map to " + file.getAbsolutePath());
         }
     }
 
