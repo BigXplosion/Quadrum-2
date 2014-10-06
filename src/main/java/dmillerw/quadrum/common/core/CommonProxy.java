@@ -1,6 +1,7 @@
 package dmillerw.quadrum.common.core;
 
 import com.google.common.collect.Maps;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -16,6 +17,7 @@ import dmillerw.quadrum.common.item.data.ItemLoader;
 import dmillerw.quadrum.common.lib.LanguageHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
@@ -54,6 +56,10 @@ public class CommonProxy {
             if (blockData != null) {
                 Block block = blockData.getBlockType().createBlock(blockData);
                 GameRegistry.registerBlock(block, ItemBlockQuadrum.class, blockData.name);
+
+                if (blockData.multipart) {
+                    FMLInterModComms.sendMessage("ForgeMicroblock", "microMaterial", new ItemStack(block));
+                }
 
                 for (String string : blockData.oreDictionary) {
                     OreDictionary.registerOre(string, block);
