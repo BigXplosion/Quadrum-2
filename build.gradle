@@ -17,4 +17,41 @@ buildscript {
 
 apply plugin: 'forge'
 
-apply from: "https://raw.githubusercontent.com/dmillerw/MainGradle/master/main.gradle"
+ext.buildProps = file "build.properties"
+ 
+buildProps.withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.version.mod}"
+group = "dmillerw.quadrum"
+archivesBaseName = "Quadrum-${config.version.minecraft}"
+
+minecraft {
+    version = "${config.version.minecraft}-${config.version.forge}"
+    runDir = "run"
+    replace "@MODVERSION@", config.version.mod
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        expand 'mod_version':project.version, 'minecraft_version':project.minecraft.version
+    }
+        
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+jar {
+    classifier = 'universal'
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
