@@ -32,7 +32,7 @@ public class BlockQuadrumFence extends BlockFence implements IQuadrumObject {
         setHardness(blockData.hardness);
         setResistance(blockData.resistance);
         setBlockName(blockData.name);
-        setCreativeTab(TabQuadrum.BLOCK);
+        setCreativeTab(blockData.getCreativeTab());
 
         if (blockData.requiresTool) {
             setHarvestLevel(blockData.getHarvestTool(), blockData.miningLevel);

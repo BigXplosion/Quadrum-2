@@ -42,7 +42,7 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
         setHardness(blockData.hardness);
         setResistance(blockData.resistance);
         setBlockName(blockData.name);
-        setCreativeTab(TabQuadrum.BLOCK);
+        setCreativeTab(blockData.getCreativeTab());
 
         this.opaque = !blockData.transparent;
         this.lightOpacity = !blockData.transparent ? 255 : 0;

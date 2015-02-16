@@ -36,7 +36,7 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumObject {
         setHardness(blockData.hardness);
         setResistance(blockData.resistance);
         setBlockName(blockData.name);
-        setCreativeTab(TabQuadrum.BLOCK);
+        setCreativeTab(blockData.getCreativeTab());
         setLightOpacity(0);
 
         this.slipperiness = blockData.slickness;

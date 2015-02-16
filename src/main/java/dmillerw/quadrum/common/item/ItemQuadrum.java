@@ -29,7 +29,7 @@ public class ItemQuadrum extends Item implements IQuadrumObject {
 
         setUnlocalizedName(itemData.name);
         setMaxStackSize(itemData.maxStackSize);
-        setCreativeTab(TabQuadrum.ITEM);
+        setCreativeTab(itemData.getCreativeTab());
     }
 
     @Override

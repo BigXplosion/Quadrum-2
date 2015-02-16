@@ -20,7 +20,7 @@ import java.io.File;
 /**
  * @author dmillerw
  */
-@Mod(modid = "Quadrum", name = "Quadrum", version = "%MOD_VERSION%", dependencies = "required-after:Forge@[%FORGE_VERSION%,)")
+@Mod(modid = "Quadrum", name = "Quadrum", version = "@Version@")
 public class Quadrum {
 
     @SidedProxy(serverSide = "dmillerw.quadrum.common.core.CommonProxy", clientSide = "dmillerw.quadrum.client.core.ClientProxy")

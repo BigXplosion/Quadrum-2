@@ -33,7 +33,7 @@ public class BlockQuadrumWall extends BlockWall implements IQuadrumObject {
         setHardness(blockData.hardness);
         setResistance(blockData.resistance);
         setBlockName(blockData.name);
-        setCreativeTab(TabQuadrum.BLOCK);
+        setCreativeTab(blockData.getCreativeTab());
         setLightOpacity(0);
 
         if (blockData.requiresTool) {

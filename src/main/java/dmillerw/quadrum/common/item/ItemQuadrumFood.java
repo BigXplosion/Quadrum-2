@@ -37,7 +37,7 @@ public class ItemQuadrumFood extends ItemFood implements IQuadrumObject {
 
         setUnlocalizedName(itemData.name);
         setMaxStackSize(itemData.maxStackSize);
-        setCreativeTab(TabQuadrum.ITEM);
+        setCreativeTab(itemData.getCreativeTab());
     }
 
     @Override

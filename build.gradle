@@ -32,7 +32,7 @@ archivesBaseName = "Quadrum-${config.version.minecraft}"
 minecraft {
     version = "${config.version.minecraft}-${config.version.forge}"
     runDir = "run"
-    replace "@MODVERSION@", config.version.mod
+    replace "@VERSION@", config.version.mod
 }
 
 processResources {

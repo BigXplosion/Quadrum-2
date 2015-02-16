@@ -3,11 +3,13 @@ package dmillerw.quadrum.common.block.data;
 import com.google.common.collect.Maps;
 import com.google.gson.annotations.SerializedName;
 import dmillerw.quadrum.common.lib.Required;
+import dmillerw.quadrum.common.lib.TabQuadrum;
 import dmillerw.quadrum.common.lib.TypeSpecific;
 import dmillerw.quadrum.common.lib.data.Drop;
 import dmillerw.quadrum.common.lib.data.MeltingData;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 
 import java.util.Map;
@@ -20,6 +22,7 @@ public class BlockData {
     /* INTERPRETED VALUES */
     private Material blockMaterial;
     private Block.SoundType blockSound;
+    private CreativeTabs blockTab;
 
     @Required
     public String name = "";
@@ -29,6 +32,8 @@ public class BlockData {
     @Required
     public String material = "";
     public String type = "block";
+    @SerializedName("creative-tab")
+    public String creativeTab = "";
 
     @TypeSpecific(TypeSpecific.Type.BLOCK)
     @SerializedName("texture-info")
@@ -145,6 +150,34 @@ public class BlockData {
             return "pickaxe";
         }
         return "pickaxe";
+    }
+
+    public CreativeTabs getCreativeTab() {
+        if (blockTab == null)  {
+            if (creativeTab.equalsIgnoreCase("blocks")) {
+                return CreativeTabs.tabBlock;
+            } else if (creativeTab.equalsIgnoreCase("decorations")) {
+                return CreativeTabs.tabDecorations;
+            } else if (creativeTab.equalsIgnoreCase("redstone")) {
+                return CreativeTabs.tabRedstone;
+            } else if (creativeTab.equalsIgnoreCase("transport")) {
+                return CreativeTabs.tabTransport;
+            } else if (creativeTab.equalsIgnoreCase("mics")) {
+                return CreativeTabs.tabMisc;
+            } else if (creativeTab.equalsIgnoreCase("food")) {
+                return CreativeTabs.tabFood;
+            } else if (creativeTab.equalsIgnoreCase("tools")) {
+                return CreativeTabs.tabTools;
+            } else if (creativeTab.equalsIgnoreCase("combat")) {
+                return CreativeTabs.tabCombat;
+            } else if (creativeTab.equalsIgnoreCase("brewing")) {
+                return CreativeTabs.tabBrewing;
+            } else if (creativeTab.equalsIgnoreCase("materials")) {
+                return CreativeTabs.tabMaterials;
+            }
+            return TabQuadrum.BLOCK;
+        }
+        return blockTab;
     }
     /* END GETTERS */
 
