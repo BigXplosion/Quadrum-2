@@ -26,7 +26,7 @@ buildProps.withReader {
 }
 
 version = "${config.version.mod}"
-group = "dmillerw.quadrum"
+group = "quadrum"
 archivesBaseName = "Quadrum-${config.version.minecraft}"
 
 minecraft {
