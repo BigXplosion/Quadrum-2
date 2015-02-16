@@ -46,12 +46,6 @@ public class CommonProxy {
         LanguageHelper.loadDirectory(Quadrum.blockLangDir);
         LanguageHelper.loadDirectory(Quadrum.itemLangDir);
 
-        // I'm a horrible lazy person
-        HashMap<String, String> forced = Maps.newHashMap();
-        forced.put("itemGroup.quadrum.block", "Quadrum Blocks");
-        forced.put("itemGroup.quadrum.item", "Quadrum Items");
-        LanguageRegistry.instance().injectLanguage("en_US", forced);
-
         for (BlockData blockData : BlockLoader.blockDataList) {
             if (blockData != null) {
                 Block block = blockData.getBlockType().createBlock(blockData);
