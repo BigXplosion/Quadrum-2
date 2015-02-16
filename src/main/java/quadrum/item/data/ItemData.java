@@ -48,6 +48,7 @@ public class ItemData {
 	public int foodAmount = 0;
 	@SerializedName("burn-time")
 	public int burnTime;
+	@SerializedName("max-stack-size")
 	public int maxStackSize = 64;
 
 	@TypeSpecific(TypeSpecific.Type.ITEM_FOOD)
