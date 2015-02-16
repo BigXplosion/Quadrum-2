@@ -56,7 +56,7 @@ jar {
     manifest commonManifest
 }
 
-task deobfJar(type: Jar) {
+task devJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
     manifest commonManifest
