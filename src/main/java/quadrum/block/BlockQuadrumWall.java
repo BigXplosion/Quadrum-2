@@ -14,7 +14,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import quadrum.block.data.BlockData;
-import quadrum.client.texture.TextureLoader;
 import quadrum.lib.BlockStaticMethodHandler;
 import quadrum.lib.IQuadrumObject;
 
@@ -55,12 +54,12 @@ public class BlockQuadrumWall extends BlockWall implements IQuadrumObject {
 
 	@Override
 	public void registerBlockIcons(IIconRegister register) {
-		TextureLoader.registerIcons(register, this);
+
 	}
 
 	@Override
 	public IIcon getIcon(int side, int meta) {
-		return TextureLoader.getIcon(this, "default");
+		return null;
 	}
 
 	@SideOnly(Side.CLIENT)

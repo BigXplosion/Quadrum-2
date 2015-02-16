@@ -19,16 +19,12 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import quadrum.block.data.BlockData;
-import quadrum.client.texture.QuadrumSprite;
-import quadrum.client.texture.TextureLoader;
 import quadrum.lib.BlockStaticMethodHandler;
 import quadrum.lib.IQuadrumObject;
 
 public class BlockQuadrum extends Block implements IQuadrumObject {
 
 	public final BlockData blockData;
-
-	public QuadrumSprite icon;
 
 	public BlockQuadrum(BlockData blockData) {
 		super(blockData.getBlockMaterial());
@@ -59,30 +55,11 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 
 	@Override
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		TextureLoader.registerIcons(iconRegister, this);
 	}
 
 	@Override
 	public IIcon getIcon(int side, int meta) {
-		ForgeDirection forgeSide = ForgeDirection.getOrientation(side);
-		ForgeDirection front = ForgeDirection.getOrientation(meta);
-		if (meta == 0)
-			front = ForgeDirection.SOUTH;
-
-		if (forgeSide == front)
-			return TextureLoader.getIcon(this, "front");
-		else if (forgeSide == front.getRotation(ForgeDirection.UP))
-			return TextureLoader.getIcon(this, "left");
-		else if (forgeSide == front.getRotation(ForgeDirection.UP).getOpposite())
-			return TextureLoader.getIcon(this, "right");
-		else if (forgeSide == front.getOpposite())
-			return TextureLoader.getIcon(this, "back");
-		else if (side == 0)
-			return TextureLoader.getIcon(this, "bottom");
-		else if (side == 1)
-			return TextureLoader.getIcon(this, "top");
-		else
-			return TextureLoader.getIcon(this, "default");
+		return null;
 	}
 
 	@Override
