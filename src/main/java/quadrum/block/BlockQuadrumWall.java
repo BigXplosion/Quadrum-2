@@ -18,7 +18,10 @@ import quadrum.lib.BlockStaticMethodHandler;
 import quadrum.lib.IQuadrumObject;
 
 public class BlockQuadrumWall extends BlockWall implements IQuadrumObject {
+
 	private final BlockData blockData;
+
+	IIcon icon;
 
 	public BlockQuadrumWall(BlockData blockData) {
 		super(blockData.getSimilarBlock());
@@ -53,13 +56,15 @@ public class BlockQuadrumWall extends BlockWall implements IQuadrumObject {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-
+		icon = register.registerIcon("qresource:" + blockData.defaultTexture);
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return null;
+		return icon;
 	}
 
 	@SideOnly(Side.CLIENT)

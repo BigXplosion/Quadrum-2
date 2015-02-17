@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import quadrum.item.data.ItemData;
 
 public class ItemQuadrumDrink extends ItemQuadrum {
+
 	public ItemQuadrumDrink(ItemData itemData) {
 		super(itemData);
 	}

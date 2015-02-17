@@ -27,7 +27,6 @@ public class ResourcePackQuadrum implements IResourcePack {
 	@Override
 	public boolean resourceExists(ResourceLocation location) {
 		File file = new File(Quadrum.configDir, location.getResourcePath());
-		System.out.println(file.exists() + "   " + file.getAbsolutePath());
 		return file.exists();
 	}
 

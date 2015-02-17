@@ -23,7 +23,6 @@ import quadrum.handler.EntityDropHandler;
 import quadrum.handler.FuelHandler;
 import quadrum.item.data.ItemData;
 import quadrum.item.data.ItemLoader;
-import quadrum.lib.LanguageHelper;
 
 public class CommonProxy {
 
@@ -39,9 +38,6 @@ public class CommonProxy {
 
 		BlockLoader.initialize();
 		ItemLoader.initialize();
-
-		LanguageHelper.loadDirectory(Quadrum.blockLangDir);
-		LanguageHelper.loadDirectory(Quadrum.itemLangDir);
 
 		for (BlockData blockData : BlockLoader.blockDataList) {
 			if (blockData != null) {

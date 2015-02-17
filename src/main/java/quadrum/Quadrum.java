@@ -12,8 +12,6 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import quadrum.lib.data.Effect;
 import quadrum.lib.data.EffectDeserializer;
@@ -43,17 +41,6 @@ public class Quadrum {
 	public static File blockDir;
 	public static File itemDir;
 
-	public static File blockLangDir;
-	public static File itemLangDir;
-
-	@SideOnly(Side.CLIENT)
-	public static File textureDir;
-
-	@SideOnly(Side.CLIENT)
-	public static File blockTextureDir;
-	@SideOnly(Side.CLIENT)
-	public static File itemTextureDir;
-
 	public static boolean textureStackTrace;
 	public static boolean dumpBlockMap;
 	public static boolean dumpItemMap;
@@ -74,31 +61,6 @@ public class Quadrum {
 
 		if (!itemDir.exists())
 			itemDir.mkdirs();
-
-		blockLangDir = new File(blockDir, "lang/");
-		itemLangDir = new File(itemDir, "lang/");
-
-		if (!blockLangDir.exists())
-			blockLangDir.mkdirs();
-
-		if (!itemLangDir.exists())
-			itemLangDir.mkdirs();
-
-		if (event.getSide() == Side.CLIENT) {
-			blockTextureDir = new File(blockDir, "textures/");
-			itemTextureDir = new File(itemDir, "textures/");
-
-			textureDir = new File(configDir, "textures/");
-
-			if (!blockTextureDir.exists())
-				blockTextureDir.mkdirs();
-
-			if (!itemTextureDir.exists())
-				itemTextureDir.mkdirs();
-
-			if (!textureDir.exists())
-				textureDir.mkdirs();
-		}
 
 		proxy.preInit(event);
 	}
