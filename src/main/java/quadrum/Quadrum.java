@@ -47,6 +47,9 @@ public class Quadrum {
 	public static File itemLangDir;
 
 	@SideOnly(Side.CLIENT)
+	public static File textureDir;
+
+	@SideOnly(Side.CLIENT)
 	public static File blockTextureDir;
 	@SideOnly(Side.CLIENT)
 	public static File itemTextureDir;
@@ -85,11 +88,16 @@ public class Quadrum {
 			blockTextureDir = new File(blockDir, "textures/");
 			itemTextureDir = new File(itemDir, "textures/");
 
+			textureDir = new File(configDir, "textures/");
+
 			if (!blockTextureDir.exists())
 				blockTextureDir.mkdirs();
 
 			if (!itemTextureDir.exists())
 				itemTextureDir.mkdirs();
+
+			if (!textureDir.exists())
+				textureDir.mkdirs();
 		}
 
 		proxy.preInit(event);

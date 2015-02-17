@@ -8,10 +8,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import quadrum.item.data.ItemData;
 import quadrum.lib.IQuadrumObject;
 
 public class ItemQuadrum extends Item implements IQuadrumObject {
+
 	protected final ItemData itemData;
 
 	public IIcon icon;
@@ -38,11 +42,13 @@ public class ItemQuadrum extends Item implements IQuadrumObject {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
-
+		icon = register.registerIcon("qresource:" + itemData.texture);
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int damage) {
 		return icon;
 	}

@@ -20,19 +20,21 @@ public class ResourcePackQuadrum implements IResourcePack {
 	@Override
 	public InputStream getInputStream(ResourceLocation location) throws IOException {
 		if (resourceExists(location))
-			return new FileInputStream(getResource(location));
+			return new FileInputStream(new File(Quadrum.configDir, location.getResourcePath()));
 		return null;
 	}
 
 	@Override
 	public boolean resourceExists(ResourceLocation location) {
-		return getResource(location) != null;
+		File file = new File(Quadrum.configDir, location.getResourcePath());
+		System.out.println(file.exists() + "   " + file.getAbsolutePath());
+		return file.exists();
 	}
 
 	@Override
 	public Set getResourceDomains() {
 		Set<String> domains = new HashSet<String>();
-		domains.add("qResources");
+		domains.add("qresource");
 		return domains;
 	}
 
@@ -49,17 +51,5 @@ public class ResourcePackQuadrum implements IResourcePack {
 	@Override
 	public String getPackName() {
 		return "CustomQuadrumResources";
-	}
-
-	private File getResource(ResourceLocation location) {
-		File block = new File(Quadrum.blockTextureDir, location.getResourcePath());
-		if (block.exists())
-			return block;
-
-		File item = new File(Quadrum.itemTextureDir, location.getResourcePath());
-		if (item.exists())
-			return item;
-
-		return null;
 	}
 }

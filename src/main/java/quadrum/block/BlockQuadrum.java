@@ -26,6 +26,8 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 
 	public final BlockData blockData;
 
+	IIcon icon;
+
 	public BlockQuadrum(BlockData blockData) {
 		super(blockData.getBlockMaterial());
 
@@ -54,15 +56,19 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
+		icon = iconRegister.registerIcon("qresource:" + blockData.defaultTexture);
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return null;
+		return icon;
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		return getIcon(side, world.getBlockMetadata(x, y, z));
 	}
