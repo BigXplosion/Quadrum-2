@@ -69,6 +69,22 @@ public class Quadrum {
 		if (!itemDir.exists())
 			itemDir.mkdirs();
 
+		if (event.getSide() == Side.CLIENT) {
+			File textures = new File(configDir, "textures/");
+			File blockTextures = new File(textures, "blocks/");
+			File itemTextures = new File(textures, "items/");
+			File lang = new File(configDir, "lang/");
+
+			if (!textures.exists())
+				textures.mkdirs();
+			if (!blockTextures.exists())
+				blockTextures.mkdirs();
+			if (!itemTextures.exists())
+				itemTextures.mkdirs();
+			if (!lang.exists())
+				lang.mkdirs();
+		}
+
 		proxy.preInit(event);
 	}
 
