@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.minecraft.client.Minecraft;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -53,11 +54,14 @@ public class Quadrum {
 		logger.log(level, String.format(message, args));
 	}
 
+	//Putting it in the constructor makes sure to add the ResourcePack before the first scan by FML so it won't get logged as not found on the first texture load.
+	public Quadrum() {
+		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+			Minecraft.getMinecraft().defaultResourcePacks.add(new ResourcePackQuadrum());
+	}
+
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		if (event.getSide() == Side.CLIENT)
-			Minecraft.getMinecraft().defaultResourcePacks.add(new ResourcePackQuadrum());
-
 		logger = event.getModLog();
 		configDir = new File(event.getModConfigurationDirectory(), "Quadrum/");
 		blockDir = new File(configDir, "block/");
