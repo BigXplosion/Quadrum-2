@@ -159,7 +159,7 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 		if (!blockData.textureInfo.isEmpty()) {
 			for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
 				if (VALID_TEXTURES.contains(entry.getKey().toLowerCase()))
-					icons.put(entry.getKey().toLowerCase(), register.registerIcon("qresource:" + entry.getValue()));
+					icons.put(entry.getKey().toLowerCase(), register.registerIcon(Utils.getIconForRegister(entry.getValue())));
 				else
 					Quadrum.log(Level.WARN, "failed to get a texture from %s: %s is not a valid direction", blockData.name, entry.getKey());
 			}
