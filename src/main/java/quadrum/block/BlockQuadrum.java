@@ -1,7 +1,14 @@
 package quadrum.block;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import com.google.common.collect.Maps;
+
+import org.apache.logging.log4j.Level;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,20 +25,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import quadrum.Quadrum;
 import quadrum.block.data.BlockData;
 import quadrum.lib.BlockStaticMethodHandler;
 import quadrum.lib.IQuadrumObject;
 
 public class BlockQuadrum extends Block implements IQuadrumObject {
 
+	public static final List VALID_TEXTURES = Arrays.asList("front", "back", "left", "right", "top", "bottom");
+
 	public final BlockData blockData;
 
-	IIcon icon;
+	Map<String, IIcon> icons;
 
 	public BlockQuadrum(BlockData blockData) {
 		super(blockData.getBlockMaterial());
 
 		this.blockData = blockData;
+		icons = Maps.newHashMap();
 
 		setTickRandomly(true);
 		setStepSound(blockData.getBlockSound());
@@ -57,14 +68,30 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister iconRegister) {
-		icon = iconRegister.registerIcon("qresource:" + blockData.defaultTexture);
+	public void registerBlockIcons(IIconRegister register) {
+		icons.put("default", register.registerIcon("qresource:" + blockData.defaultTexture));
+		registerIcons(register);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		return icon;
+		if (icons.size() > 1 && !blockData.textureInfo.isEmpty()) {
+			ForgeDirection dir = ForgeDirection.getOrientation(meta);
+			if (side == dir.ordinal())
+				return getBlockIcon("front");
+			if (side == dir.getOpposite().ordinal())
+				return getBlockIcon("back");
+			if (side == dir.getRotation(ForgeDirection.UP).ordinal())
+				return getBlockIcon("left");
+			if (side == dir.getRotation(ForgeDirection.UP).getOpposite().ordinal())
+				return getBlockIcon("right");
+			if (side == 0)
+				return getBlockIcon("bottom");
+			if (side == 1)
+				return getBlockIcon("top");
+		}
+		return icons.get("default");
 	}
 
 	@Override
@@ -121,5 +148,20 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 	@Override
 	public BlockData get() {
 		return blockData;
+	}
+
+	public IIcon getBlockIcon(String type) {
+		return icons.containsKey(type) ? icons.get(type) : icons.get("default");
+	}
+
+	public void registerIcons(IIconRegister register) {
+		if (!blockData.textureInfo.isEmpty()) {
+			for (Map.Entry<String, String> entry : blockData.textureInfo.entrySet()) {
+				if (VALID_TEXTURES.contains(entry.getKey().toLowerCase()))
+					icons.put(entry.getKey().toLowerCase(), register.registerIcon("qresource:" + entry.getValue()));
+				else
+					Quadrum.log(Level.WARN, "failed to get a texture from %s: %s is not a valid direction", blockData.name, entry.getKey());
+			}
+		}
 	}
 }

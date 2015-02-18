@@ -8,11 +8,15 @@ import com.google.gson.GsonBuilder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.client.Minecraft;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
 
+import quadrum.client.ResourcePackQuadrum;
 import quadrum.lib.data.Effect;
 import quadrum.lib.data.EffectDeserializer;
 import quadrum.proxy.CommonProxy;
@@ -51,6 +55,9 @@ public class Quadrum {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		if (event.getSide() == Side.CLIENT)
+			Minecraft.getMinecraft().defaultResourcePacks.add(new ResourcePackQuadrum());
+
 		logger = event.getModLog();
 		configDir = new File(event.getModConfigurationDirectory(), "Quadrum/");
 		blockDir = new File(configDir, "block/");
