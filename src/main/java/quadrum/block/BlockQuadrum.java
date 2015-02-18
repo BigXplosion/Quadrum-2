@@ -29,6 +29,7 @@ import quadrum.Quadrum;
 import quadrum.block.data.BlockData;
 import quadrum.lib.BlockStaticMethodHandler;
 import quadrum.lib.IQuadrumObject;
+import quadrum.util.Utils;
 
 public class BlockQuadrum extends Block implements IQuadrumObject {
 
@@ -69,7 +70,7 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		icons.put("default", register.registerIcon("qresource:" + blockData.defaultTexture));
+		icons.put("default", register.registerIcon(Utils.getIconForRegister(blockData.defaultTexture)));
 		registerIcons(register);
 	}
 

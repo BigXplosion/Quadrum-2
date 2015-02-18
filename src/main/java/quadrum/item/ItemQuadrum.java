@@ -13,6 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import quadrum.item.data.ItemData;
 import quadrum.lib.IQuadrumObject;
+import quadrum.util.Utils;
 
 public class ItemQuadrum extends Item implements IQuadrumObject {
 
@@ -44,7 +45,7 @@ public class ItemQuadrum extends Item implements IQuadrumObject {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
-		icon = register.registerIcon("qresource:" + itemData.texture);
+		icon = register.registerIcon(Utils.getIconForRegister(itemData.texture));
 	}
 
 	@Override

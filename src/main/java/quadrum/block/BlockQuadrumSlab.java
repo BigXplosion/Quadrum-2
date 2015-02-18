@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import quadrum.block.data.BlockData;
 import quadrum.lib.BlockStaticMethodHandler;
 import quadrum.lib.IQuadrumObject;
+import quadrum.util.Utils;
 
 public class BlockQuadrumSlab extends BlockSlab implements IQuadrumObject {
 
@@ -63,7 +64,7 @@ public class BlockQuadrumSlab extends BlockSlab implements IQuadrumObject {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
-		icon = register.registerIcon("qresource:" + blockData.defaultTexture);
+		icon = register.registerIcon(Utils.getIconForRegister(blockData.defaultTexture));
 	}
 
 	@Override
