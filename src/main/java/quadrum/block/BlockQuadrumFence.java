@@ -2,11 +2,15 @@ package quadrum.block;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -74,6 +78,12 @@ public class BlockQuadrumFence extends BlockFence implements IQuadrumObject {
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		return blockData.collision ? super.getCollisionBoundingBoxFromPool(world, x, y, z) : null;
+	}
+
+	@Override
+	public boolean canConnectFenceTo(IBlockAccess world, int x, int y, int z) {
+		Block neighbour = world.getBlock(x, y, z);
+		return neighbour instanceof BlockFence || neighbour instanceof BlockFenceGate || (neighbour.isOpaqueCube() && neighbour.renderAsNormalBlock());
 	}
 
 	@Override
