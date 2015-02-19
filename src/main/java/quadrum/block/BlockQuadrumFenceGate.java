@@ -25,6 +25,7 @@ public class BlockQuadrumFenceGate extends BlockFenceGate implements IQuadrumObj
 
 	public BlockQuadrumFenceGate(BlockData blockData) {
 		this.blockData = blockData;
+		this.blockMaterial = blockData.getBlockMaterial();
 
 		setStepSound(blockData.getBlockSound());
 		setHardness(blockData.hardness);
