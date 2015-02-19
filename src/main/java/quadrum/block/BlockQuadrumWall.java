@@ -1,11 +1,13 @@
 package quadrum.block;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockWall;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -91,6 +93,11 @@ public class BlockQuadrumWall extends BlockWall implements IQuadrumObject {
 	public boolean canConnectWallTo(IBlockAccess world, int x, int y, int z) {
 		Block neighbour = world.getBlock(x, y, z);
 		return neighbour instanceof BlockFenceGate || neighbour instanceof BlockWall || (neighbour.isOpaqueCube() && neighbour.renderAsNormalBlock());
+	}
+
+	@Override
+	public void getSubBlocks(Item item, CreativeTabs creativeTab, List list) {
+		list.add(new ItemStack(item, 1, 0));
 	}
 
 	@Override
