@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 
 import quadrum.block.BlockQuadrum;
 import quadrum.block.BlockQuadrumFence;
+import quadrum.block.BlockQuadrumFenceGate;
 import quadrum.block.BlockQuadrumSlab;
 import quadrum.block.BlockQuadrumStair;
 import quadrum.block.BlockQuadrumWall;
@@ -28,6 +29,7 @@ public @interface TypeSpecific {
 		BLOCK_STAIR("stair", BlockQuadrumStair.class),
 		BLOCK_SLAB("slab", BlockQuadrumSlab.class),
 		BLOCK_FENCE("fence", BlockQuadrumFence.class),
+		BLOCK_FENCE_GATE("fence-gate", BlockQuadrumFenceGate.class),
 		BLOCK_WALL("wall", BlockQuadrumWall.class),
 		ITEM("item", ItemQuadrum.class),
 		ITEM_FOOD("food", ItemQuadrumFood.class),
