@@ -150,6 +150,11 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 	}
 
 	@Override
+	public int getRenderType() {
+		return blockData.connectedTexture ? Quadrum.ctmRenderID : 0;
+	}
+
+	@Override
 	public BlockData get() {
 		return blockData;
 	}

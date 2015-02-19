@@ -42,6 +42,8 @@ public class Quadrum {
 
 	public static Logger logger;
 
+	public static int ctmRenderID;
+
 	public static File configDir;
 	public static File blockDir;
 	public static File itemDir;
