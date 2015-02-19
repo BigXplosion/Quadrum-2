@@ -27,6 +27,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import quadrum.Quadrum;
 import quadrum.block.data.BlockData;
+import quadrum.client.render.ctm.ConnectedTextureHandler;
 import quadrum.lib.BlockStaticMethodHandler;
 import quadrum.lib.IQuadrumObject;
 import quadrum.util.Utils;
@@ -73,6 +74,11 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister register) {
+		if (blockData.connectedTexture) {
+			ConnectedTextureHandler.registerConnectedTexture(register, this, 0, blockData.defaultTexture);
+			return;
+		}
+
 		icons.put("default", register.registerIcon(Utils.getIconForRegister(blockData.defaultTexture)));
 		registerIcons(register);
 	}
@@ -80,6 +86,8 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
+		if (blockData.connectedTexture)
+			return ConnectedTextureHandler.getConnectedTexture(this, 0, 0).icon;
 		if (icons.size() > 1 && !blockData.textureInfo.isEmpty()) {
 			ForgeDirection dir = ForgeDirection.getOrientation(meta);
 			if (side == dir.ordinal())
@@ -106,7 +114,7 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 
 	@Override
 	public boolean renderAsNormalBlock() {
-		return !blockData.transparent;
+		return !blockData.transparent || !blockData.connectedTexture;
 	}
 
 	@Override

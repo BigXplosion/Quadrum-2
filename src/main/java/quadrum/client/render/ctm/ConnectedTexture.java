@@ -11,7 +11,7 @@ public class ConnectedTexture {
 
 	public ConnectedTexture(IIconRegister reg, String iconName) {
 		this.icon = ConnectedTextureHandler.registerIcon(reg, iconName);
-		this.submap = new TextureSubmap(ConnectedTextureHandler.registerIcon(reg, icon + "-ctm"), 4, 4);
+		this.submap = new TextureSubmap(ConnectedTextureHandler.registerIcon(reg, iconName + "-ctm"), 4, 4);
 		this.submapSmall = new TextureSubmap(this.icon, 2, 2);
 	}
 }

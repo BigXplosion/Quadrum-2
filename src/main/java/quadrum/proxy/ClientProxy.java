@@ -8,7 +8,6 @@ import quadrum.client.render.ctm.RendererCTM;
 
 public class ClientProxy extends CommonProxy {
 
-
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);

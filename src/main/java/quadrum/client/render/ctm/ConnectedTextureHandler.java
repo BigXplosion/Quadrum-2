@@ -4,8 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
-import quadrum.util.Utils;
-
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
@@ -14,7 +12,7 @@ public class ConnectedTextureHandler {
 	private static TMap<NameMetaPair, ConnectedTexture[]> connectedTextures = new THashMap<NameMetaPair, ConnectedTexture[]>();
 
 	static IIcon registerIcon(IIconRegister reg, String icon) {
-		return reg.registerIcon(Utils.getIconForRegister(icon));
+		return reg.registerIcon("qresource:" + icon);
 	}
 
 	public static void registerConnectedTexture(IIconRegister reg, Block block, int meta, String icon) {
