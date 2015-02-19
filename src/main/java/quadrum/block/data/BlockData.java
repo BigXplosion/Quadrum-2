@@ -51,7 +51,7 @@ public class BlockData {
 	public MeltingData meltingData;
 
 	@TypeSpecific({TypeSpecific.Type.BLOCK, TypeSpecific.Type.BLOCK_SLAB})
-	public float slickness = 0F;
+	public float slickness = 0.6F;
 	public float hardness = 2F;
 	public float resistance = 2F;
 

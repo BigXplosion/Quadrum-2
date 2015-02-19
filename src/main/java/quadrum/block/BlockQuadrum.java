@@ -55,7 +55,10 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 
 		opaque = !blockData.transparent;
 		lightOpacity = !blockData.transparent ? 255 : 0;
-		slipperiness = blockData.slickness;
+		if (blockData.slickness > 0)
+			slipperiness = blockData.slickness;
+		else
+			Quadrum.log(Level.WARN, "%s had a slickness value of 0 or lower, this could cause unstable blocks or even world corruption when not used right. Slickness has not been set!", blockData.name);
 
 		if (blockData.requiresTool)
 			setHarvestLevel(blockData.getHarvestTool(), blockData.miningLevel);
