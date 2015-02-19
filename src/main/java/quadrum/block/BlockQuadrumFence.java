@@ -23,7 +23,7 @@ public class BlockQuadrumFence extends BlockFence implements IQuadrumObject {
 
 	IIcon icon;
 
-	private BlockQuadrumFence(BlockData blockData) {
+	public BlockQuadrumFence(BlockData blockData) {
 		super("", blockData.getBlockMaterial());
 
 		this.blockData = blockData;
