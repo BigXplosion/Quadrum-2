@@ -13,6 +13,6 @@ public class ClientProxy extends CommonProxy {
 		super.preInit(event);
 
 		Quadrum.ctmRenderID = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(Quadrum.ctmRenderID, new RendererCTM());
+		//RenderingRegistry.registerBlockHandler(Quadrum.ctmRenderID, new RendererCTM());
 	}
 }

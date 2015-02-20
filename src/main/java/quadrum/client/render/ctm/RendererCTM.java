@@ -40,13 +40,6 @@ public class RendererCTM implements ISimpleBlockRenderingHandler {
 			rendererCTM.setRenderBoundsFromBlock(block);
 			return rendererCTM.renderStandardBlock(block, x, y, z);
 		} else {
-			int oldBottom = rendererOld.uvRotateBottom;
-			int oldEast = rendererOld.uvRotateEast;
-			int oldNorth = rendererOld.uvRotateNorth;
-			int oldSouth = rendererOld.uvRotateSouth;
-			int oldTop = rendererOld.uvRotateTop;
-			int oldWest = rendererOld.uvRotateWest;
-
 			rendererOld.setRenderBoundsFromBlock(block);
 			boolean res = rendererOld.renderStandardBlock(block, x, y, z);
 
