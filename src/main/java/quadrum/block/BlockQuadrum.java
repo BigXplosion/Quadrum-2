@@ -90,6 +90,10 @@ public class BlockQuadrum extends Block implements IQuadrumObject {
 			return ConnectedTextureHandler.getConnectedTexture(this, 0, 0).icon;
 		if (icons.size() > 1 && !blockData.textureInfo.isEmpty()) {
 			ForgeDirection dir = ForgeDirection.getOrientation(meta);
+
+			if (meta == 0)
+				dir = ForgeDirection.SOUTH;
+
 			if (side == dir.ordinal())
 				return getBlockIcon("front");
 			if (side == dir.getOpposite().ordinal())
