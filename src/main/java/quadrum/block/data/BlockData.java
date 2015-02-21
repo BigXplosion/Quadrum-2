@@ -68,6 +68,9 @@ public class BlockData {
 	@SerializedName("mining-level")
 	public int miningLevel = 0;
 
+	@SerializedName("can-monster-spawn")
+	public boolean canMonsterSpawn = true;
+
 	public boolean transparent = false;
 	public boolean collision = true;
 	@TypeSpecific(TypeSpecific.Type.BLOCK)
