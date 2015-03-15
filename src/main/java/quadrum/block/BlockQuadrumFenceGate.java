@@ -3,6 +3,7 @@ package quadrum.block;
 import java.util.ArrayList;
 
 import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -25,7 +26,6 @@ public class BlockQuadrumFenceGate extends BlockFenceGate implements IQuadrumObj
 
 	public BlockQuadrumFenceGate(BlockData blockData) {
 		this.blockData = blockData;
-		this.blockMaterial = blockData.getBlockMaterial();
 
 		setStepSound(blockData.getBlockSound());
 		setHardness(blockData.hardness);
@@ -35,6 +35,11 @@ public class BlockQuadrumFenceGate extends BlockFenceGate implements IQuadrumObj
 
 		if (blockData.requiresTool)
 			setHarvestLevel(blockData.getHarvestTool(), blockData.miningLevel);
+	}
+
+	@Override
+	public Material getMaterial() {
+		return blockData.getBlockMaterial();
 	}
 
 	@Override
