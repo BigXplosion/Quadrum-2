@@ -5,7 +5,7 @@
   "description": "Quadrum",
   "version": "${mod_version}",
   "mcversion": "${minecraft_version}",
-  "authors": [ "dmillerw" ],
+  "authors": [ "dmillerw", "big_Xplosion", "SnowShock35" ],
   "dependencies": [
      "mod_MinecraftForge"
   ]
