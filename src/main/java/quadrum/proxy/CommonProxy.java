@@ -21,6 +21,7 @@ import quadrum.block.data.BlockData;
 import quadrum.block.data.BlockLoader;
 import quadrum.handler.EntityDropHandler;
 import quadrum.handler.FuelHandler;
+import quadrum.handler.OreGenHandler;
 import quadrum.item.data.ItemData;
 import quadrum.item.data.ItemLoader;
 
@@ -49,6 +50,9 @@ public class CommonProxy {
 
 				for (String string : blockData.oreDictionary)
 					OreDictionary.registerOre(string, block);
+
+				if (blockData.oreGen != null)
+					GameRegistry.registerWorldGenerator(new OreGenHandler(block, blockData.oreGen.amount, blockData.oreGen.veinSize, blockData.oreGen.maxHeight, blockData.oreGen.minHeight, blockData.oreGen.nether), 10);
 			}
 		}
 

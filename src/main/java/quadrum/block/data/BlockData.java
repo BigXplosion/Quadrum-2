@@ -15,6 +15,7 @@ import quadrum.lib.TabQuadrum;
 import quadrum.lib.TypeSpecific;
 import quadrum.lib.data.Drop;
 import quadrum.lib.data.MeltingData;
+import quadrum.lib.data.OreGen;
 
 public class BlockData {
 
@@ -49,6 +50,10 @@ public class BlockData {
 	@TypeSpecific({TypeSpecific.Type.BLOCK, TypeSpecific.Type.BLOCK_SLAB})
 	@SerializedName("melting-data")
 	public MeltingData meltingData;
+
+	@TypeSpecific(TypeSpecific.Type.BLOCK)
+	@SerializedName("ore-generation")
+	public OreGen oreGen;
 
 	@TypeSpecific({TypeSpecific.Type.BLOCK, TypeSpecific.Type.BLOCK_SLAB})
 	public float slickness = 0.6F;
@@ -153,32 +158,29 @@ public class BlockData {
 	public CreativeTabs getCreativeTab() {
 		if (blockTab == null) {
 			if (creativeTab.equalsIgnoreCase("blocks"))
-				return CreativeTabs.tabBlock;
+				blockTab = CreativeTabs.tabBlock;
 			else if (creativeTab.equalsIgnoreCase("decorations"))
-				return CreativeTabs.tabDecorations;
+				blockTab = CreativeTabs.tabDecorations;
 			else if (creativeTab.equalsIgnoreCase("redstone"))
-				return CreativeTabs.tabRedstone;
+				blockTab = CreativeTabs.tabRedstone;
 			else if (creativeTab.equalsIgnoreCase("transport"))
-				return CreativeTabs.tabTransport;
+				blockTab = CreativeTabs.tabTransport;
 			else if (creativeTab.equalsIgnoreCase("mics"))
-				return CreativeTabs.tabMisc;
+				blockTab = CreativeTabs.tabMisc;
 			else if (creativeTab.equalsIgnoreCase("food"))
-				return CreativeTabs.tabFood;
+				blockTab = CreativeTabs.tabFood;
 			else if (creativeTab.equalsIgnoreCase("tools"))
-				return CreativeTabs.tabTools;
+				blockTab = CreativeTabs.tabTools;
 			else if (creativeTab.equalsIgnoreCase("combat"))
-				return CreativeTabs.tabCombat;
+				blockTab = CreativeTabs.tabCombat;
 			else if (creativeTab.equalsIgnoreCase("brewing"))
-				return CreativeTabs.tabBrewing;
+				blockTab = CreativeTabs.tabBrewing;
 			else if (creativeTab.equalsIgnoreCase("materials"))
-				return CreativeTabs.tabMaterials;
-			return TabQuadrum.BLOCK;
+				blockTab = CreativeTabs.tabMaterials;
+			else
+				blockTab = TabQuadrum.BLOCK;
 		}
 		return blockTab;
 	}
 	/* END GETTERS */
-
-	public void reload(Block parent) {
-
-	}
 }
